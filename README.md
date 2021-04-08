@@ -1,16 +1,22 @@
 # Create a Typescript package for CX networks
 
-The Cytoscape Exchange (CX) format is a flexible JSON based data structure for transmission of biological networks. Although JSON is a standard format for data exchange in web applications, working with it holds some pitfalls, especially if the structure must follow a strict and complex scheme. 
+## Introduction:
+Biological signaling pathways, or biological networks in general form the basis of many bioinformatics
+analyzes. In order to be able to formally capture the complex relationships in these networks, various
+standards have been established, including the JSON-based Cytoscape Exchange (CX) format. Even if JSON
+is the standard format for data exchange in web applications, it is often difficult to ensure that the schema,
+structure and relationships are correctly implemented. The aim of this work is to model the data structure and
+dependencies in Typescript, to test them on official networks and to give a statistical overview of the
+elements used therein.
 
-In modern web application frameworks, Typescript is used, because it features compile-time type checking, classes and modules. These features can be used to create a model of the CX data structur.
+## Range of tasks:
+* Implement a Typescript-module representing the CX data structure definition
+* Compile statistics of the usage of the different aspects, and their properties within the official NDEx networks
+* Testing the module on selected networks
+* Integration of the module within a website for the analysis/error recognition of CX files and visualization of the results
+* (Optional) Publish the created Typescript module as a NPM package
 
-Tasks:
-* Develop a Typescript module, that represents the CX data structure definition
-* Test the package on some (provided) CX networks
-* (Optional) Generate a usage statistics of CX aspects and properties within the official NDEx networks (User: ndexbuttler)
-* (Optional) Deploy the module as NPM module
-
-Further reading:
+# Further reading:
 * The CX data model: https://home.ndexbio.org/data-model/
 * Typescript: https://www.typescriptlang.org/
 * Typescript package development: https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c
