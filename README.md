@@ -21,3 +21,7 @@ elements used therein.
 * Typescript: https://www.typescriptlang.org/
 * Typescript package development: https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c
 * NDEx: http://ndexbio.org/
+
+A good starting point is definitely the NDEx developing website:
+
+https://home.ndexbio.org/readme-developers-best-practices/
