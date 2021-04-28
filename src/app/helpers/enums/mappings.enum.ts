@@ -1,0 +1,5 @@
+export enum MappingTypes {
+  DISCRETE = 'DISCRETE',
+  COUNTINUOUS = 'COUNTINUOUS',
+  PASSTHROUGH = 'PASSTHROUGH',
+}
