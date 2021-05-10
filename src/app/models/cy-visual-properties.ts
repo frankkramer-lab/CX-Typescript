@@ -37,7 +37,7 @@ export class CyVisualProperties extends AspectElement {
     cyVisualProperties.dependencies = value.dependencies;
 
     if (value.mappings !== null && value.mappings !== undefined) {
-      this.parseMappings(value, cyVisualProperties);
+      this.parseMappings(value.mappings, cyVisualProperties);
     }
     return cyVisualProperties;
   }
