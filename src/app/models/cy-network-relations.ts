@@ -10,24 +10,22 @@ export class CyNetworkRelations extends AspectElement {
   private _relationship?: Relationship | undefined;
   private _name?: string | undefined;
 
-  /**
-   * Class constructor
-   * @param childNetworkId
-   * @param parent
-   * @param relationship
-   * @param name
-   */
-  constructor(
-    childNetworkId: number,
-    parent?: number,
-    relationship?: Relationship,
-    name?: string
-  ) {
+  constructor() {
     super();
-    this._childNetworkId = childNetworkId;
-    this._parent = parent;
-    this._relationship = relationship;
-    this._name = name;
+  }
+
+  parseElement(value: {
+    p?: number;
+    c: number;
+    r?: Relationship;
+    name?: string;
+  }): CyNetworkRelations {
+    const cyNetworkRelations = new CyNetworkRelations();
+    cyNetworkRelations.parent = value.p;
+    cyNetworkRelations.childNetworkId = value.c;
+    cyNetworkRelations.relationship = value.r;
+    cyNetworkRelations.name = value.name;
+    return cyNetworkRelations;
   }
 
   /**

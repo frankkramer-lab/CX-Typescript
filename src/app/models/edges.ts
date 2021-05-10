@@ -4,29 +4,27 @@ import { AspectElement } from './aspect-element';
  * This class represents the aspect elements for the Edges
  */
 export class Edges extends AspectElement {
-  private _id: number;
-  private _source: number;
-  private _target: number;
+  private _id!: number;
+  private _source!: number;
+  private _target!: number;
   private _interaction?: string | undefined;
 
-  /**
-   * Class constructor
-   * @param id
-   * @param source
-   * @param target
-   * @param interaction
-   */
-  constructor(
-    id: number,
-    source: number,
-    target: number,
-    interaction?: string
-  ) {
+  constructor() {
     super();
-    this._id = id;
-    this._source = source;
-    this._target = target;
-    this._interaction = interaction;
+  }
+
+  parseElement(value: {
+    '@id': number;
+    s: number;
+    t: number;
+    i?: string;
+  }): Edges {
+    const edge = new Edges();
+    edge.id = value['@id'];
+    edge.source = value.s;
+    edge.target = value.t;
+    edge.interaction = value.i;
+    return edge;
   }
 
   /**

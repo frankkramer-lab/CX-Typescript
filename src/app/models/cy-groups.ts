@@ -4,37 +4,34 @@ import { AspectElement } from './aspect-element';
  * This class represents apsect elements for CyGroups aspect
  */
 export class CyGroups extends AspectElement {
-  private _id: number;
-  private _name: string;
-  private _nodes: number[];
-  private _externalEdges: number[];
-  private _internalEdges: number[];
+  private _id!: number;
+  private _name!: string;
+  private _nodes!: number[];
+  private _externalEdges!: number[];
+  private _internalEdges!: number[];
   private _collapsed?: boolean | undefined;
 
-  /**
-   * Class constructor
-   * @param id
-   * @param name
-   * @param nodes
-   * @param externalEdges
-   * @param internalEdges
-   * @param collapsed
-   */
-  constructor(
-    id: number,
-    name: string,
-    nodes: number[],
-    externalEdges: number[],
-    internalEdges: number[],
-    collapsed?: boolean
-  ) {
+  constructor() {
     super();
-    this._id = id;
-    this._name = name;
-    this._nodes = nodes;
-    this._externalEdges = externalEdges;
-    this._internalEdges = internalEdges;
-    this._collapsed = collapsed;
+ }
+
+  parseElement(value: {
+    '@id': number;
+    n: string;
+    nodes: number[];
+    external_edges: number[];
+    internal_edges: number[];
+    collapsed: boolean;
+  }): CyGroups {
+    const cyGroups = new CyGroups();
+    cyGroups.id = value['@id'];
+    cyGroups.name = value.n;
+    cyGroups.nodes = value.nodes;
+    cyGroups.externalEdges = value.external_edges;
+    cyGroups.internalEdges = value.internal_edges;
+    cyGroups.collapsed = value.collapsed;
+    return cyGroups;
+
   }
 
   /**

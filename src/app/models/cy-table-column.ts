@@ -6,29 +6,26 @@ import { AspectElement } from './aspect-element';
  */
 export class CyTableColumn extends AspectElement {
   private _subnetworkId?: number | undefined;
-  private _name: string;
+  private _name!: string;
   private _dataType?: DataTypes | undefined;
-  private _appliesTo: AppliesTo;
+  private _appliesTo!: AppliesTo;
 
-  /**
-   * Class constructor
-   * @param name
-   * @param appliesTo
-   * @param subnetworkId
-   * @param dataType
-   */
-  constructor(
-    name: string,
-    appliesTo: AppliesTo,
-    subnetworkId?: number,
-    dataType?: DataTypes
-  ) {
+  constructor() {
     super();
+  }
 
-    this._subnetworkId = subnetworkId;
-    this._name = name;
-    this._dataType = dataType;
-    this._appliesTo = appliesTo;
+  parseElement(value: {
+    s?: number;
+    n: string;
+    d?: DataTypes;
+    applies_to: AppliesTo;
+  }): CyTableColumn {
+    const cyTableColumn = new CyTableColumn();
+    cyTableColumn.subnetworkId = value.s;
+    cyTableColumn.name = value.n;
+    cyTableColumn.dataType = value.d;
+    cyTableColumn.appliesTo = value.applies_to;
+    return cyTableColumn;
   }
 
   /**

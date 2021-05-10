@@ -4,27 +4,30 @@ import { AspectElement } from './aspect-element';
  * This class represents the aspect elements for the cartesian layout aspect
  */
 export class CartesianLayout extends AspectElement {
-  private _node: number;
-  private _x: number;
-  private _y: number;
+  private _node!: number;
+  private _x!: number;
+  private _y!: number;
   private _z?: number | undefined;
   private _view?: number | undefined;
 
-  /**
-   * Class constructor
-   * @param node
-   * @param x
-   * @param y
-   * @param z
-   * @param view
-   */
-  constructor(node: number, x: number, y: number, z?: number, view?: number) {
+  constructor() {
     super();
-    this._node = node;
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._view = view;
+  }
+
+  parseElement(value: {
+    node: number;
+    x: number;
+    y: number;
+    z?: number;
+    view?: number;
+  }): CartesianLayout {
+    const cartesianLayout = new CartesianLayout();
+    cartesianLayout.node = value.node;
+    cartesianLayout.x = value.x;
+    cartesianLayout.y = value.y;
+    cartesianLayout.z = value.z;
+    cartesianLayout.view = value.view;
+    return cartesianLayout;
   }
 
   /**

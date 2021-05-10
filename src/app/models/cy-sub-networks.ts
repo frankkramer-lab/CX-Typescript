@@ -4,16 +4,27 @@ import { AspectElement } from './aspect-element';
  * This class represents the aspect elements for the CySubNetworks aspect
  */
 export class CySubNetworks extends AspectElement {
-  private _id: number;
-  private _nodes: number[] | 'all';
-  private _edges: number[] | 'all';
+  private _id!: number;
+  private _nodes!: number[] | 'all';
+  private _edges!: number[] | 'all';
 
-  constructor(id: number, nodes: number[] | 'all', edges: number[] | 'all') {
+  constructor() {
     super();
-    this._id = id;
-    this._nodes = nodes;
-    this._edges = edges;
   }
+
+  parseElement(value: {
+    '@id': number;
+    edges: number[] | 'all';
+    nodes: number[] | 'all';
+  }): CySubNetworks {
+    const cySubNetworks = new CySubNetworks();
+    cySubNetworks.id = value['@id'];
+    cySubNetworks.edges = value.edges;
+    cySubNetworks.nodes = value.nodes;
+    return cySubNetworks;
+
+  }
+
   /**
    * Identifier of the subnetwork
    */

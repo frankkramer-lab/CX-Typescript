@@ -4,28 +4,27 @@ import { AspectElement } from './aspect-element';
  * This class represents aspect elements for the Nodes aspect
  */
 export class Nodes extends AspectElement {
-  private _id?: number | undefined;
+  private _id!: number;
   private _name?: string | undefined;
   private _represents?: string | undefined;
 
-  /**
-   * Class constructor
-   * @param id
-   * @param name
-   * @param represents
-   */
-  constructor(id?: number, name?: string, represents?: string) {
+  constructor() {
     super();
-    this._id = id;
-    this._name = name;
-    this._represents = represents;
+  }
+
+ parseElement(value: {'@id': number, n?: string, r?: string}): Nodes {
+  const node = new Nodes();
+  node.id = value['@id'];
+  node.name = value.n;
+  node.represents = value.r;
+  return node;
   }
 
   /**
    * Node identifier
    * All node ids must be unique in the node aspect
    */
-  public get id(): number | undefined {
+  public get id(): number {
     return this._id;
   }
 
@@ -43,7 +42,7 @@ export class Nodes extends AspectElement {
     return this._represents;
   }
 
-  public set id(value: number | undefined) {
+  public set id(value: number) {
     this._id = value;
   }
 

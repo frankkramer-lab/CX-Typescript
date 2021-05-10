@@ -17,14 +17,22 @@ export class Aspect<T extends AspectElement> {
   private _aspectElements: T[] = [];
   private _aspectType?: AspectTypes | undefined;
 
-  /**
-   * Class constructor
-   * @param name
-   */
   constructor(name: string) {
     this._name = name;
     this._aspectElements = [];
     this.aspectType = undefined;
+  }
+
+  public isCore(): boolean {
+    return this._aspectType === AspectTypes.CORE;
+  }
+
+  public isCytoscape(): boolean {
+    return this._aspectType === AspectTypes.CYTOSCAPE;
+  }
+
+  public isOpaque(): boolean {
+    return this._aspectType === AspectTypes.OPAQUE;
   }
 
   /**
@@ -48,7 +56,7 @@ export class Aspect<T extends AspectElement> {
   /**
    * Aspect elements for this Aspect (ex: Node Aspect Elements like name, represnets...)
    */
-  public get aspectElements(): AspectElement[] {
+  public get aspectElements(): T[] {
     return this._aspectElements;
   }
   /**
@@ -85,17 +93,5 @@ export class Aspect<T extends AspectElement> {
     } else {
       this._aspectType = value;
     }
-  }
-
-  public isCore(): boolean {
-    return this._aspectType === AspectTypes.CORE;
-  }
-
-  public isCytoscape(): boolean {
-    return this._aspectType === AspectTypes.CYTOSCAPE;
-  }
-
-  public isOpaque(): boolean {
-    return this._aspectType === AspectTypes.OPAQUE;
   }
 }

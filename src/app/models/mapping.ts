@@ -1,4 +1,5 @@
 import { MappingTypes } from '../helpers/enums/mappings.enum';
+import { KeyValue } from '../helpers/key-value';
 import { MappingContinuous } from './mapping-continuous';
 import { MappingDiscrete } from './mapping-discrete';
 import { MappingPassthrough } from './mapping-passthrough';
@@ -6,22 +7,16 @@ import { MappingPassthrough } from './mapping-passthrough';
 /**
  * This class represents the Mapping property in the cyVisualProperties aspect
  */
-export class Mapping {
-  private _type: MappingTypes;
-  private _definition: MappingDiscrete | MappingContinuous | MappingPassthrough;
+export abstract class Mapping {
+  private _type!: MappingTypes;
+  private _definition!:
+    | MappingDiscrete
+    | MappingContinuous
+    | MappingPassthrough;
 
-  /**
-   * Class constructor
-   * @param type
-   * @param definition
-   */
-  constructor(
-    type: MappingTypes,
-    definition: MappingDiscrete | MappingContinuous | MappingPassthrough
-  ) {
-    this._type = type;
-    this._definition = definition;
-  }
+  constructor() {}
+
+  abstract parseMappings(value: any): any;
 
   /**
    * Mapping type (Discrete, Continuous, Passthrough)
@@ -40,7 +35,6 @@ export class Mapping {
     switch (this._type) {
       case MappingTypes.COUNTINUOUS:
         return this._definition as MappingContinuous;
-        break;
       case MappingTypes.DISCRETE:
         return this._definition as MappingDiscrete;
 
@@ -48,7 +42,6 @@ export class Mapping {
         return this._definition as MappingPassthrough;
       default:
         return this._definition;
-        break;
     }
   }
 

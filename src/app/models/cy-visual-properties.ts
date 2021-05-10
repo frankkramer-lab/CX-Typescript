@@ -1,35 +1,77 @@
+import { MappingTypes } from '../helpers/enums/mappings.enum';
 import { ElementProperties } from '../helpers/enums/types.enum';
 import { KeyValue } from '../helpers/key-value';
 import { AspectElement } from './aspect-element';
 import { Mapping } from './mapping';
+import { MappingContinuous } from './mapping-continuous';
+import { MappingDiscrete } from './mapping-discrete';
+import { MappingPassthrough } from './mapping-passthrough';
 
 /**
  * This class represents the aspect elements for the CyVisualProperties aspect
  */
 export class CyVisualProperties extends AspectElement {
-  private _propertiesOf: ElementProperties;
+  private _propertiesOf!: ElementProperties;
   private _appliesTo?: number | undefined;
   private _view?: number | undefined;
-  private _properties: KeyValue<string>;
+  private _properties!: KeyValue<string>;
   private _dependencies?: KeyValue<string> | undefined;
   private _mappings?: KeyValue<Mapping>[] | undefined;
 
-  constructor(
-    propertiesOf: ElementProperties,
-    properties: KeyValue<string>,
-    appliesTo?: number,
-    view?: number,
-    dependencies?: KeyValue<string>,
-    mappings?: KeyValue<Mapping>[]
-  ) {
+  constructor() {
     super();
+  }
 
-    this._propertiesOf = propertiesOf;
-    this._appliesTo = appliesTo;
-    this._view = view;
-    this._properties = properties;
-    this._dependencies = dependencies;
-    this._mappings = mappings;
+  parseElement(value: {
+    properties_of: ElementProperties;
+    applies_to?: number;
+    view?: number;
+    properties: KeyValue<string>;
+    dependencies: KeyValue<string>;
+    mappings: any;
+  }): CyVisualProperties {
+    const cyVisualProperties = new CyVisualProperties();
+    cyVisualProperties.propertiesOf = value.properties_of;
+    cyVisualProperties.appliesTo = value.applies_to;
+    cyVisualProperties.properties = value.properties;
+    cyVisualProperties.dependencies = value.dependencies;
+
+    if (value.mappings !== null && value.mappings !== undefined) {
+      this.parseMappings(value, cyVisualProperties);
+    }
+    return cyVisualProperties;
+  }
+
+  private parseMappings(mappings: any, cyVisualProperties: CyVisualProperties) {
+    const mapping: KeyValue<Mapping>[] = [];
+    const data = Object.keys(mappings);
+
+    data.map((key: string) => {
+      const property = mappings[key];
+      switch (mappings[key].type) {
+        case MappingTypes.DISCRETE:
+          const discrete = new MappingDiscrete();
+          property.type = MappingTypes.DISCRETE;
+          property.definition = discrete.parseMappings(mappings[key]);
+          break;
+        case MappingTypes.COUNTINUOUS:
+          const continuous = new MappingContinuous();
+          property.type = MappingTypes.COUNTINUOUS;
+          property.definition = continuous.parseMappings(mappings[key]);
+          break;
+        case MappingTypes.PASSTHROUGH:
+          const passthrough = new MappingPassthrough();
+          property.type = MappingTypes.PASSTHROUGH;
+          property.definition = passthrough.parseMappings(mappings[key]);
+          break;
+
+        default:
+          break;
+      }
+      mappings[key] = property;
+      mapping.push(mappings);
+    });
+    cyVisualProperties.mappings = mapping;
   }
 
   /**

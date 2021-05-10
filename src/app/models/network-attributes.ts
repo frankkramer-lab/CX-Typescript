@@ -6,29 +6,50 @@ import { AspectElement } from './aspect-element';
  * This class represents aspect elements for the NetworkAttributes aspect
  */
 export class NetworkAttributes extends AspectElement {
-  private _name: string;
-  private _value: any;
+  private _name!: string;
+  private _value!: any;
   private _dataType?: DataTypes | undefined;
   private _subNetworkId?: number | undefined;
 
-  /**
-   * Class constructor
-   * @param name
-   * @param value
-   * @param dataType
-   * @param subNetworkId
-   */
-  constructor(
-    name: string,
-    value: any,
-    dataType?: DataTypes,
-    subNetworkId?: number
-  ) {
+  constructor() {
     super();
-    this._name = name;
-    this._value = value;
-    this._dataType = dataType;
-    this._subNetworkId = subNetworkId;
+  }
+
+  parseElement(value: {
+    n: string;
+    v: any;
+    d?: DataTypes;
+    s?: number;
+  }): NetworkAttributes {
+    const networkAttributes = new NetworkAttributes();
+    networkAttributes.name = value.n;
+    networkAttributes.value = value.v;
+    networkAttributes.dataType = value.d;
+    networkAttributes.subNetworkId = value.s;
+    return networkAttributes;
+  }
+
+
+  private parseValueToDataType() {
+    switch (this.dataType) {
+      case DataTypes.LONG:
+      case DataTypes.DOUBLE:
+      case DataTypes.INTEGER:
+        this.value = Number(this.value);
+        break;
+      case DataTypes.BOOLEAN:
+        this.value = Boolean(this.value);
+        break;
+
+      case DataTypes.LIST_OF_LONG:
+      case DataTypes.LIST_OF_DOUBLE:
+      case DataTypes.LIST_OF_INTEGER:
+        this.value.map((v: any) => Number(v));
+        break;
+
+      default:
+        break;
+    }
   }
 
   /**
@@ -87,25 +108,4 @@ export class NetworkAttributes extends AspectElement {
     return undefined;
   }
 
-  private parseValueToDataType() {
-    switch (this.dataType) {
-      case DataTypes.LONG:
-      case DataTypes.DOUBLE:
-      case DataTypes.INTEGER:
-        this.value = Number(this.value);
-        break;
-      case DataTypes.BOOLEAN:
-        this.value = Boolean(this.value);
-        break;
-
-      case DataTypes.LIST_OF_LONG:
-      case DataTypes.LIST_OF_DOUBLE:
-      case DataTypes.LIST_OF_INTEGER:
-        this.value.map((v: any) => Number(v));
-        break;
-
-      default:
-        break;
-    }
-  }
 }

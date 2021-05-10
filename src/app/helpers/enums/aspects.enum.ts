@@ -1,16 +1,22 @@
 /**
- * This enum represents different core aspects that can be available  in a CX file
+ * This enum represents aspects that handel settings for the Cx file
  */
-export enum AspectCore {
+export enum AspectSettings {
   NUMBER_VERIFICATION = 'numberVerification',
   METADATA = 'metaData',
+  STATUS = 'status',
+}
+
+/**
+ * This enum represents different core aspects that can be available in a CX file
+ */
+export enum AspectCore {
   NODES = 'nodes',
   EDGES = 'edges',
   NODE_ATTRIBUTES = 'nodeAttributes',
   EDGE_ATTRIBUTES = 'edgeAttributes',
   NETWORK_ATTRIBUTES = 'networkAttributes',
   CARTESIAN_LAYOUT = 'cartesianLayout',
-  STATUS = 'status',
 }
 
 /**
