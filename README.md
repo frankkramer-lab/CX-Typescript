@@ -17,7 +17,6 @@ elements used therein.
 * (Optional) Publish the created Typescript module as a NPM package
 
 
-Further reading:
 # Further reading:
 * The CX data model: https://home.ndexbio.org/data-model/
 * Typescript: https://www.typescriptlang.org/
