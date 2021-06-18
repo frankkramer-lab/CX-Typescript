@@ -4,9 +4,11 @@
       "module": "commonjs",
       "declaration": true,
       "outDir": "./lib",
-      "strict": true
+      "strict": true,
+      "experimentalDecorators": true,
+      "resolveJsonModule": true
     },
     "main": "lib/index.js",
     "include": ["src"],
-    "exclude": ["node_modules", "**/__tests__/*", "models", "helpes"]
+    "exclude": ["node_modules"]
   }
