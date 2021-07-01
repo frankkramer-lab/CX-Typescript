@@ -1,7 +1,11 @@
 import Ajv from 'ajv';
-let jsonMap = require('json-source-map');
+import * as pointer from 'json-pointer';
+import { _network } from './schema';
+import { ErrorMessage } from './models/error';
+const jsonMap = require('json-source-map');
 
 let ajv: Ajv;
+let errorMessages: ErrorMessage[] = [];
 
 export function getAjvInstance() {
   if (!ajv) {
@@ -9,281 +13,67 @@ export function getAjvInstance() {
       allErrors: true,
       allowUnionTypes: true,
       strictTypes: false,
+      verbose: false,
     });
-    require('ajv-keywords')(ajv);
+    require('ajv-errors')(ajv);
   }
   return ajv;
 }
 
-export function validateSchema(schema: any, subject: any) {
+export function validateDataAgainstSchema(data: any) {
   ajv = getAjvInstance();
+  try {
+    const sourceMap = jsonMap.parse(data);
+    const validate = ajv.compile(_network);
+    const valid = validate(sourceMap.data);
 
-  var testSchema = {
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        numberVerification: {
-          type: 'array',
-          items: {
-            $ref: '#/definitions/nv',
-          },
-        },
-        metadata: {
-          type: 'array',
-          items: {
-            $ref: '#/definitions/metadata',
-          },
-        },
-        status: {
-          type: 'array',
-          items: {
-            $ref: '#/definitions/status',
-          },
-        },
-        nodes: {
-          type: 'array',
-          items: {
-            $ref: '#/definitions/nodes',
-          },
-        },
-        edges: {
-          type: 'array',
-          items: {
-            $ref: '#/definitions/edges',
-          },
-        },
-      },
-      minProperties: 1,
-      maxProperties: 1,
-    },
-    allOf: [
-      {
-        contains: {
-          type: 'object',
-          properties: {
-            numberVerification: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/nv',
-              },
-            },
-          },
-          required: ['numberVerification'],
-        },
-      },
-      {
-        contains: {
-          type: 'object',
-          properties: {
-            metadata: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/metadata',
-              },
-            },
-          },
-          required: ['metadata'],
-        },
-      },
-      {
-        contains: {
-          type: 'object',
-          properties: {
-            status: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/status',
-              },
-            },
-          },
-          required: ['status'],
-        },
-      },
-    ],
-    definitions: {
-      nvObj: {
-        type: 'object',
-        properties: {
-          nv: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/nv',
-            },
-          },
-        },
-        required: ['nv'],
-        additionalProperties: false,
-      },
-      nv: {
-        type: 'object',
-        properties: {
-          longNumber: {
-            type: 'number',
-          },
-        },
-      },
-      metaDataObj: {
-        type: 'object',
-        properties: {
-          metaData: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/metadata',
-            },
-          },
-        },
-        additionalProperties: false,
-      },
-      metadata: {
-        type: 'object',
-        properties: {
-          name: {
-            type: 'string',
-          },
-        },
-        required: ['name'],
-      },
-      nodesObj: {
-        type: 'object',
-        properties: {
-          nodes: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/nodes',
-            },
-          },
-        },
-        additionalProperties: false,
-        maxProperties: 1,
-        required: ['nodes'],
-      },
-      nodes: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'number',
-          },
-        },
-        required: ['id'],
-      },
-      nodeAttObj: {
-        type: 'object',
-        properties: {
-          nodeAttributes: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/nodeAtt',
-            },
-          },
-        },
-        required: ['nodeAttributes'],
-        additionalProperties: false,
-      },
-      nodeAtt: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'number',
-          },
-          nodeId: {
-            type: 'number',
-          },
-        },
-        required: ['id', 'nodeId'],
-      },
-      edgesObj: {
-        type: 'object',
-        properties: {
-          edges: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/edges',
-            },
-          },
-        },
-        required: ['edges'],
-        additionalProperties: false,
-      },
-      edges: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'number',
-          },
-          nodeId: {
-            type: 'number',
-          },
-        },
-        required: ['id', 'nodeId'],
-      },
-      edgeAttObj: {
-        type: 'object',
-        properties: {
-          edgeAttributes: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/edgeAtt',
-            },
-          },
-        },
-        required: ['edgeAttributes'],
-        additionalProperties: false,
-      },
-      edgeAtt: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'number',
-          },
-          edgeId: {
-            type: 'number',
-          },
-        },
-        required: ['id', 'edgeId'],
-      },
-      statusObj: {
-        type: 'object',
-        properties: {
-          status: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/status',
-            },
-          },
-        },
-        required: ['status'],
-        additionalProperties: false,
-      },
-      status: {
-        type: 'object',
-        properties: {
-          success: {
-            type: 'boolean',
-          },
-        },
-      },
-    },
-  };
-
-  const validate = ajv.compile(testSchema);
-  const valid = validate(subject);
-
-  if (!valid) {
-    let errorMessage = '';
-    const sourceMap = jsonMap.stringify(subject, null, 2);
-    const jsonLines = sourceMap.json.split('\n');
-    validate.errors?.map((error) => {
-      console.log(error);
-      // errorMessage += '\n\n' + ajv.errorsText([error]);
-      // console.log('errorText ', ajv.errorsText([error]));
-      // console.log('errorPointers ', sourceMap.pointers);
-      // console.log('error ', error);
-      let errorPointer = sourceMap.pointers[error.instancePath];
-      //   errorMessage += '\n> ' + jsonLines.slice(errorPointer.value.line, errorPointer.valueEnd.line).join('\n> ');
-      errorMessage += `\n ${error.keyword} ${error.message} at line: ${errorPointer.value.line}, col: ${errorPointer.value.column}  \n`;
-    });
-    // console.log('error message', errorMessage);
-    // throw new Error(errorMessage);
+    if (!valid) {
+      validate.errors?.map((error) => {
+        if (error.keyword === 'errorMessage') {
+          const errorPointer = sourceMap.pointers[error.instancePath];
+          const splittedMessage = error.message!.split(':', 2);
+          addError(splittedMessage[0], splittedMessage[1], errorPointer);
+        }
+      });
+    }
+  } catch (error) {
+    addError('invalid_json_format', error.message, null);
   }
+  return errorMessages;
+}
+
+function addError(aspectName: string, message: string, errorPointer?: any) {
+  const errorMessage: ErrorMessage = {
+    aspectName,
+    message,
+  };
+  if (errorPointer !== null) {
+    errorMessage.loc = {
+      value: {
+        line: errorPointer.value.line + 1,
+        column: errorPointer.value.column,
+        pos: errorPointer.value.pos,
+      },
+      valueEnd: {
+        line: errorPointer.valueEnd.line + 1,
+        column: errorPointer.valueEnd.column,
+        pos: errorPointer.valueEnd.pos,
+      },
+    };
+    if (errorPointer?.key !== undefined && errorPointer?.key !== null) {
+      errorMessage.loc.key = {
+        line: errorPointer.key.line + 1,
+        column: errorPointer.key.column,
+        pos: errorPointer.key.pos,
+      };
+    }
+    if (errorPointer?.keyEnd !== undefined && errorPointer?.keyEnd !== null) {
+      errorMessage.loc.keyEnd = {
+        line: errorPointer.keyEnd.line + 1,
+        column: errorPointer.keyEnd.column,
+        pos: errorPointer.keyEnd.pos,
+      };
+    }
+  }
+  errorMessages.push(errorMessage);
 }
