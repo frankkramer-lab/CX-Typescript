@@ -1,72 +1,12 @@
-import * as schemas from './schema';
 import * as validator from './validate';
+import * as fs from 'fs';
 
-var data = [
-  {
-    numberVerification: [
-      {
-        longNumber: 281474976710655,
-      },
-    ],
-  },
-  {
-    metaData: [
-      {
-        name: 'cyVisualProperties',
-        elementCount: 3,
-        version: '1.0',
-        consistencyGroup: 1,
-      },
-      {
-        name: 'nodes',
-        elementCount: 155,
-        idCounter: 155,
-        version: '1.0',
-        consistencyGroup: 1,
-      },
-      {
-        name: 'edges',
-        elementCount: 312,
-        idCounter: 312,
-        version: '1.0',
-        consistencyGroup: 1,
-      },
-      {
-        name: 'networkAttributes',
-        elementCount: 14,
-        idCounter: 14,
-        version: '1.0',
-        consistencyGroup: 1,
-      },
-      {
-        name: 'nodeAttributes',
-        elementCount: 330,
-        idCounter: 330,
-        version: '1.0',
-        consistencyGroup: 1,
-      },
-      {
-        name: 'edgeAttributes',
-        elementCount: 3120,
-        idCounter: 3120,
-        version: '1.0',
-        consistencyGroup: 1,
-      },
-      {
-        name: 'cartesianLayout',
-        elementCount: 155,
-        idCounter: 156,
-      },
-    ],
-  },
-  {
-    status: [
-      {
-        error: '',
-        success: true,
-      },
-    ],
-  },
-];
+const file = fs.readFileSync('D:\\CX-Typescript\\test\\DrugBank - Carrier drugs.cx', 'utf-8');
 
-validator.validateSchema(schemas._networkArr, data);
+const result = validator.validateDataAgainstSchema(file);
+
+result.map((error) => {
+    console.log(error.aspectName);
+    console.log(error.message);
+    console.log(error.loc);
+});
