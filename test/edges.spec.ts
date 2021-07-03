@@ -1,5 +1,5 @@
 import { AspectCore } from '../src/helpers/enums/aspects.enum';
-import { _edgesArr } from '../src/schema';
+import { _edgesArr } from '../src/schema/edges.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

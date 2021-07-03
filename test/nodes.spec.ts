@@ -1,5 +1,5 @@
 import { AspectCore } from '../src/helpers/enums/aspects.enum';
-import { _nodesArr } from '../src/schema';
+import { _nodesArr } from '../src/schema/nodes.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

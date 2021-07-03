@@ -1,4 +1,4 @@
-import { _nodeAttributesArr } from '../src/schema';
+import { _nodeAttributesArr } from '../src/schema/attributes.schema';
 import { AspectCore } from '../src/helpers/enums/aspects.enum';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';

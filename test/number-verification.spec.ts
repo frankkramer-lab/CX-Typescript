@@ -1,5 +1,5 @@
-import { _numberVerificationArr } from '../src/schema';
 import { AspectSettings } from '../src/helpers/enums/aspects.enum';
+import { _numberVerificationArr } from '../src/schema/number-verification.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

@@ -1,5 +1,5 @@
 import { AspectCore } from '../src/helpers/enums/aspects.enum';
-import { _cartesianLayoutArr } from '../src/schema';
+import { _cartesianLayoutArr } from '../src/schema/cartesian-layout.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

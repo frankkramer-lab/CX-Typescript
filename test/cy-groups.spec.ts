@@ -1,5 +1,5 @@
-import { _cyGroupArr } from '../src/schema';
 import { AspectCore } from '../src/helpers/enums/aspects.enum';
+import { _cyGroupArr } from '../src/schema/cy-group.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

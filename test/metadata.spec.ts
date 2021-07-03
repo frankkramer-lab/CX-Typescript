@@ -1,5 +1,5 @@
 import { AspectSettings } from '../src/helpers/enums/aspects.enum';
-import { _metaDataArr } from '../src/schema';
+import { _metaDataArr } from '../src/schema/metadata.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

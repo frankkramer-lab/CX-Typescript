@@ -1,5 +1,5 @@
 import { AspectCytoscape } from '../src/helpers/enums/aspects.enum';
-import { _cyVisualPropertiesArr } from '../src/schema';
+import { _cyVisualPropertiesArr } from '../src/schema/cy-visual-properties.schema';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
 

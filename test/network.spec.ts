@@ -1,4 +1,4 @@
-import { _network } from '../src/schema';
+import { _network } from '../src/schema/network.schema';
 import * as validator from '../src/validate';
 
 describe.skip('network schema', () => {
