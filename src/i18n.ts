@@ -20,7 +20,7 @@ const errorMessages = new localization({
     invalid_pattern: '{aspect_name}:{property_name} does not match the specific pattern (accepted "_" or alphanumeric)',
     min_properties: '{aspect_name}:{property_name} must not have fewer than 1 property',
     max_properties: '{aspect_name}:{property_name} must not have more than 1 property',
-    contains: '{aspect_name}:must contain {property_name} property',
+    contains: '{aspect_name}:must contain {property_name} aspect',
   },
   de: {
     type_is_object: '{aspect_name}:{property_name} muss vom Typ Objekt sein',
