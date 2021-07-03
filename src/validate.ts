@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import * as pointer from 'json-pointer';
-import { _network } from './schema';
+import { _network } from './schema/network.schema';
 import { ErrorMessage } from './models/error';
 const jsonMap = require('json-source-map');
 
@@ -40,6 +40,10 @@ export function validateDataAgainstSchema(data: any) {
     addError('invalid_json_format', error.message, null);
   }
   return errorMessages;
+}
+
+export function validateDataContent(data: any, pointers: any) {
+
 }
 
 function addError(aspectName: string, message: string, errorPointer?: any) {
