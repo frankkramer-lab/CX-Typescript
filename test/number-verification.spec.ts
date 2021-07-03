@@ -46,7 +46,7 @@ describe.skip('number Verification schema', () => {
     let errorMessage = validate.errors?.map((error) => error.message).toString();
     // assert
     expect(errorMessage).toEqual(
-      i18.getErrorMessage('type_is_array', AspectSettings.NUMBER_VERIFICATION, '"number verification"'),
+      i18.getErrorMessage('type_is_array', AspectSettings.NUMBER_VERIFICATION, '"numberVerification"'),
     );
   });
 

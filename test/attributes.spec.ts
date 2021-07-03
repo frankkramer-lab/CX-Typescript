@@ -2,6 +2,7 @@ import { _nodeAttributesArr } from '../src/schema';
 import { AspectCore } from '../src/helpers/enums/aspects.enum';
 import * as validator from '../src/validate';
 import * as i18 from '../src/i18n';
+import { Utilities } from '../src/helpers/utilities';
 
 describe.skip('node, edge attributes schema', () => {
   let ajv = validator.getAjvInstance();
@@ -171,7 +172,9 @@ describe.skip('node, edge attributes schema', () => {
     validate(nodeAttributes);
     let errorMessage = validate.errors?.map((error) => error.message).toString();
     // assert
-    expect(errorMessage).toEqual(i18.getErrorMessage('enum', AspectCore.NODE_ATTRIBUTES, `[${dataTypes.join(', ')}]`));
+    expect(errorMessage).toEqual(
+      i18.getErrorMessage('enum', AspectCore.NODE_ATTRIBUTES, `[${Utilities.DataTypes.join(', ')}]`),
+    );
   });
 
   it("should succeed if type of property 'd' is 'list_of_string' and type of property 'v' is the same", () => {
