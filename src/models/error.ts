@@ -1,7 +1,7 @@
 export interface ErrorMessage {
   aspectName: string;
   message: string;
-  loc?: ErrorLocation;
+  loc?: ErrorLocation[];
 }
 
 export interface ErrorLocation {
