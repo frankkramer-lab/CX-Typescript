@@ -5,12 +5,12 @@ import {
   _edgeAttributesArr,
   _networkAttributesArr,
   _nodeAttributesArr,
-  _cyTableColumnArr,
 } from './attributes.schema';
 import { _cartesianLayoutArr } from './cartesian-layout.schema';
 import { _cyGroupArr } from './cy-group.schema';
 import { _cyNetworkRelationsArr } from './cy-network-relations.schema';
 import { _cySubNetworksArr } from './cy-sub-networks.schema';
+import { _cyTableColumnArr } from './cy-table-column.schema';
 import { _cyVisualPropertiesArr } from './cy-visual-properties.schema';
 import { _edgesArr } from './edges.schema';
 import { _metaDataArr } from './metadata.schema';
