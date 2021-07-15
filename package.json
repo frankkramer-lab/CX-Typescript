@@ -1,0 +1,18 @@
+{
+  "name": "cx-typescript-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.rz.uni-augsburg.de/misit-master/cx-typescript-server.git"
+  },
+  "author": "Hassan Assaad",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
