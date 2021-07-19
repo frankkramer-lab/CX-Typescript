@@ -1,0 +1,13 @@
+<div class="text-center" *ngIf="loadingEditor">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+
+<ngx-monaco-editor
+  style="height: 100%"
+  [options]="editorOptions"
+  [(ngModel)]="code"
+  (init)="onInit($event)"
+></ngx-monaco-editor>
