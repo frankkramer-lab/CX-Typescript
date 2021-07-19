@@ -1,0 +1,197 @@
+<app-network-list
+  *ngIf="networks.length > 0"
+  [networks]="networks"
+></app-network-list>
+
+<h5>Load file from NDEx</h5>
+<div class="input-group input-group-sm mb-3">
+  <input
+    class="form-control form-control-sm"
+    placeholder="Network UUID"
+    type="text"
+    [(ngModel)]="ndexNetworkUUID"
+  />
+  <div class="input-group-append">
+    <button
+      (click)="importFromNdex()"
+      [disabled]="loadingHttp"
+      class="btn btn-outline-secondary btn-sm"
+      data-toggle="tooltip"
+      placement="left"
+      type="button"
+    >
+      <span
+        *ngIf="loadingHttp"
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ loadingHttp === false ? "Submit" : "Loading..." }}
+    </button>
+  </div>
+</div>
+
+<h5>Browse local files</h5>
+
+<div class="input-group input-group-sm mb-3">
+  <div class="custom-file">
+    <input
+      (change)="setAndValidateFile($event)"
+      class="custom-file-input"
+      id="localNetworkFile"
+      type="file"
+    />
+    <label class="custom-file-label" for="localNetworkFile"
+      >Browse local files</label
+    >
+  </div>
+  <div class="input-group-append">
+    <button
+      (click)="importLocalFile()"
+      [disabled]="loadingFile"
+      class="btn btn-outline-secondary btn-sm"
+      data-toggle="tooltip"
+      placement="left"
+      type="button"
+    >
+      <span
+        *ngIf="loadingFile"
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ loadingFile === false ? "Upload" : "Uploading..." }}
+    </button>
+  </div>
+</div>
+
+<!-- TODO: Need to move error messages into different component -->
+<div
+  *ngIf="showFileSizeTooLargeAlert"
+  class="alert alert-warning alert-dismissible"
+  role="alert"
+>
+  <h5>File too large</h5>
+  <p><b>Current file size</b>: ~ {{ currentFileSize }} MB</p>
+  <p><b>Maximum allowed file size</b>: {{ sizeLimit }} MB</p>
+  <button
+    aria-label="Close"
+    class="close"
+    data-dismiss="alert"
+    type="button"
+    (click)="showFileSizeTooLargeAlert = false"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div
+  *ngIf="showFileSizeOkAlert"
+  class="alert alert-success alert-dismissible"
+  role="alert"
+>
+  <h5>File size okay</h5>
+  <p><b>Current file size</b>: ~ {{ currentFileSize }} MB</p>
+
+  <button
+    aria-label="Close"
+    class="close"
+    data-dismiss="alert"
+    type="button"
+    (click)="showFileSizeOkAlert = false"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div
+  *ngIf="showFileNotValidAlert"
+  class="alert alert-danger alert-dismissible"
+  role="alert"
+>
+  <h5>Wrong file extension</h5>
+  <p>
+    The loaded file needs to have the .cx file extension. Your file currently
+    has the extension: <b>".{{ invalidExtension }}"</b>
+  </p>
+  <button
+    aria-label="Close"
+    class="close"
+    data-dismiss="alert"
+    type="button"
+    (click)="showFileNotValidAlert = false"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div
+  *ngIf="showFileElementCountTooBig"
+  class="alert alert-warning alert-dismissible"
+  role="alert"
+>
+  <h5>The network contains too many elements for this application</h5>
+  <p>
+    #Nodes:
+    <b
+      [ngStyle]="{ color: nodeCount > elementLimit ? '#ff9900' : '#856404' }"
+      >{{ nodeCount }}</b
+    >
+  </p>
+  <p>
+    #Edges:
+    <b
+      [ngStyle]="{ color: nodeCount > elementLimit ? '#ff9900' : '#856404' }"
+      >{{ edgeCount }}</b
+    >
+  </p>
+  <button
+    aria-label="Close"
+    class="close"
+    data-dismiss="alert"
+    type="button"
+    (click)="showFileElementCountTooBig = false"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div
+  *ngIf="showHttpErrorAlert"
+  class="alert alert-warning alert-dismissible"
+  role="alert"
+>
+  <h5>Error while sending request to the server</h5>
+  <p>
+    {{ httpErrorMessage }}
+  </p>
+  <button
+    aria-label="Close"
+    class="close"
+    data-dismiss="alert"
+    type="button"
+    (click)="showHttpErrorAlert = false"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div
+  *ngIf="showNetworkAlreadyExistAlert"
+  class="alert alert-warning alert-dismissible"
+  role="alert"
+>
+  <h5>The uploaded network already exist</h5>
+  <p>
+    {{ networkAlreadyExist }}
+  </p>
+  <button
+    aria-label="Close"
+    class="close"
+    data-dismiss="alert"
+    type="button"
+    (click)="showNetworkAlreadyExistAlert = false"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
