@@ -4,7 +4,6 @@ import { ErrorLocation, ErrorMessage } from './models/error';
 import { AspectCore, AspectCytoscape, AspectSettings } from './helpers/enums/aspects.enum';
 import { Constant } from './helpers/enums/constant';
 const jsonMap = require('json-source-map');
-var now = require('performance-now');
 
 let ajv: Ajv;
 let validate: ValidateFunction<unknown>;
@@ -12,7 +11,7 @@ let data: any[] = [];
 let pointers: any = {};
 const errorMessages: ErrorMessage[] = [];
 
-function getAjvInstance() {
+export function getAjvInstance() {
   if (!ajv) {
     ajv = new Ajv({
       allErrors: true,
@@ -32,9 +31,7 @@ function getValidateInstance() {
 
 export function validateCxData(networkFile: any) {
   try {
-    console.log("start parsing json...");
     const sourceMap = jsonMap.parse(networkFile);
-    console.log('finsish parsing json');
     data = sourceMap.data;
     pointers = sourceMap.pointers;
     validateDataAgainstSchema();
@@ -48,9 +45,7 @@ export function validateCxData(networkFile: any) {
 function validateDataAgainstSchema() {
   ajv = getAjvInstance();
   validate = getValidateInstance();
-  console.log("start valdiating...");
   const valid = validate(data);
-  console.log("finish valdiating...");
 
   if (!valid) {
     const errors = validate.errors?.filter(error => error.keyword === 'errorMessage');
