@@ -1,31 +1,40 @@
-import Ajv from 'ajv';
+import Ajv, { ValidateFunction } from 'ajv';
 import { _network } from './schema/network.schema';
 import { ErrorLocation, ErrorMessage } from './models/error';
 import { AspectCore, AspectCytoscape, AspectSettings } from './helpers/enums/aspects.enum';
 import { Constant } from './helpers/enums/constant';
 const jsonMap = require('json-source-map');
+var now = require('performance-now');
 
 let ajv: Ajv;
+let validate: ValidateFunction<unknown>;
 let data: any[] = [];
 let pointers: any = {};
 const errorMessages: ErrorMessage[] = [];
 
-export function getAjvInstance() {
+function getAjvInstance() {
   if (!ajv) {
     ajv = new Ajv({
       allErrors: true,
-      allowUnionTypes: true,
       strictTypes: false,
-      verbose: false,
     });
     require('ajv-errors')(ajv);
   }
   return ajv;
 }
 
+function getValidateInstance() {
+  if(!validate) {
+    validate = ajv.compile(_network);
+  }
+  return validate;
+}
+
 export function validateCxData(networkFile: any) {
   try {
+    console.log("start parsing json...");
     const sourceMap = jsonMap.parse(networkFile);
+    console.log('finsish parsing json');
     data = sourceMap.data;
     pointers = sourceMap.pointers;
     validateDataAgainstSchema();
@@ -38,16 +47,17 @@ export function validateCxData(networkFile: any) {
 
 function validateDataAgainstSchema() {
   ajv = getAjvInstance();
-  const validate = ajv.compile(_network);
+  validate = getValidateInstance();
+  console.log("start valdiating...");
   const valid = validate(data);
+  console.log("finish valdiating...");
 
   if (!valid) {
-    validate.errors?.map((error) => {
-      if (error.keyword === 'errorMessage') {
+    const errors = validate.errors?.filter(error => error.keyword === 'errorMessage');
+    errors?.map((error) => {
         const errorPointer = pointers[error.instancePath];
         const splittedMessage = error.message!.split(':', 2);
         addError(splittedMessage[0], splittedMessage[1], [errorPointer]);
-      }
     });
   }
 }
