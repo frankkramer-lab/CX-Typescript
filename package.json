@@ -1,6 +1,6 @@
 {
   "name": "cx-typescript",
-  "version": "1.0.0",
+  "version": "0.0.4",
   "description": "A library used to check the validity of CX files and to parse them into a defined structure",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,12 +31,8 @@
     "@types/jest": "^26.0.23",
     "@types/json-pointer": "^1.0.31",
     "@types/node": "^15.12.5",
-    "ajv": "^8.6.0",
-    "ajv-errors": "^3.0.0",
     "jest": "^27.0.1",
     "json-pointer": "^0.6.1",
-    "json-source-map": "^0.6.1",
-    "localized-strings": "^0.2.4",
     "performance-now": "^2.1.0",
     "prettier": "^2.3.0",
     "ts-jest": "^27.0.0",
@@ -47,5 +43,10 @@
   "files": [
     "lib/**/*"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "ajv": "^8.6.0",
+    "ajv-errors": "^3.0.0",
+    "json-source-map": "^0.6.1",
+    "localized-strings": "^0.2.4"
+  }
 }
