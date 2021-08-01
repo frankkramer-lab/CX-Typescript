@@ -18,6 +18,7 @@ import { _nodesArr } from './nodes.schema';
 import { _numberVerificationArr } from './number-verification.schema';
 import { _statusArr } from './status.schema';
 
+// tslint:disable-next-line: variable-name
 const number_verification_is_required_in_network = {
   contains: {
     type: 'object',
@@ -28,6 +29,7 @@ const number_verification_is_required_in_network = {
   },
 };
 
+// tslint:disable-next-line: variable-name
 const metaData_is_required_in_network = {
   contains: {
     type: 'object',
@@ -37,6 +39,7 @@ const metaData_is_required_in_network = {
     contains: i18.getErrorMessage('contains', 'network', '"metaData"'),
   },
 };
+// tslint:disable-next-line: variable-name
 const status_is_required_in_network = {
   contains: {
     type: 'object',

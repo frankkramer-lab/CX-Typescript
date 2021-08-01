@@ -3,14 +3,20 @@ import { _network } from './schema/network.schema';
 import { ErrorLocation, ErrorMessage } from './models/error';
 import { AspectCore, AspectCytoscape, AspectSettings } from './helpers/enums/aspects.enum';
 import { Constant } from './helpers/enums/constant';
+// tslint:disable-next-line: no-var-requires
 const jsonMap = require('json-source-map');
+const now = require('performance-now');
 
 let ajv: Ajv;
 let validate: ValidateFunction<unknown>;
 let data: any[] = [];
 let pointers: any = {};
-const errorMessages: ErrorMessage[] = [];
+let errorMessages: ErrorMessage[] = [];
 
+/**
+ * This method is used to get the ajv instance as a singlton
+ * @returns
+ */
 export function getAjvInstance() {
   if (!ajv) {
     ajv = new Ajv({
@@ -22,41 +28,77 @@ export function getAjvInstance() {
   return ajv;
 }
 
+/**
+ * This method is used to compile the network schema only once accross the application
+ * https://ajv.js.org/guide/getting-started.html#basic-data-validation
+ * @returns
+ */
 function getValidateInstance() {
-  if(!validate) {
+  if (!validate) {
     validate = ajv.compile(_network);
   }
   return validate;
 }
 
+/**
+ * This method is used to validate the data based on 2 craiteria
+ * - Json Schema  
+ * - Custom validation
+ * @param networkFile 
+ * @returns 
+ */
 export function validateCxData(networkFile: any) {
   try {
+    const t1 = now();
     const sourceMap = jsonMap.parse(networkFile);
+    const t2 = now();
+    console.log(`parsing json string took: ${t2-t1} ms`);
     data = sourceMap.data;
     pointers = sourceMap.pointers;
+    errorMessages = [];
+    const t3 = now();
     validateDataAgainstSchema();
+    const t4 = now();
+    console.log(`valdation of json schema took: ${t4-t3} ms`);
+    const t5 = now();
     validateDataContent();
+    const t6 = now();
+    console.log(`valdation against custom validation took: ${t6-t5} ms`);
   } catch (error) {
     addError('invalid_json_format', error.message, null);
   }
   return errorMessages;
 }
 
+/**
+ * This method is used to validate data against json schema
+ */
 function validateDataAgainstSchema() {
+  const t1 = now();
   ajv = getAjvInstance();
+  const t2 = now();
+  console.log(`getting ajv instance took: ${t2-t1} ms`);
+  const t3 = now();
   validate = getValidateInstance();
+  const t4 = now();
+  console.log(`compiling ajv against schema took: ${t4-t3} ms`);
+  const t5 = now();
   const valid = validate(data);
-
+  const t6 = now();
+  console.log(`calling validate function took: ${t5-t6} ms`);
   if (!valid) {
-    const errors = validate.errors?.filter(error => error.keyword === 'errorMessage');
+    const errors = validate.errors?.filter((error) => error.keyword === 'errorMessage');
     errors?.map((error) => {
-        const errorPointer = pointers[error.instancePath];
-        const splittedMessage = error.message!.split(':', 2);
-        addError(splittedMessage[0], splittedMessage[1], [errorPointer]);
+      const errorPointer = pointers[error.instancePath];
+      const splittedMessage = error.message!.split(':', 2);
+      addError(splittedMessage[0], splittedMessage[1], [errorPointer]);
     });
   }
 }
 
+/**
+ * This method is used to validate data against custom data
+ */
 export function validateDataContent(): void {
   validateUniqueProperties(AspectSettings.METADATA, Constant.Name, false);
   validateUniqueProperties(AspectCore.NODES, Constant.Id, false);
@@ -76,14 +118,56 @@ export function validateDataContent(): void {
   validatePropertyValueExistence(AspectCore.CARTESIAN_LAYOUT, AspectCore.NODES, Constant.Node, Constant.Id, false);
   validatePropertyValueExistence(AspectCytoscape.CY_GROUPS, AspectCore.NODES, Constant.Nodes, Constant.Id, false);
 
-  validatePropertyValueExistence(AspectCytoscape.CY_HIDDEN_ATTRIBUTES, AspectCytoscape.CY_SUBNETWORKS, Constant.S, Constant.Id, false);
-  validatePropertyValueExistence(AspectCytoscape.CY_TABLE_COLUMN, AspectCytoscape.CY_SUBNETWORKS, Constant.S, Constant.Id, false);
-  validatePropertyValueExistence(AspectCore.NODE_ATTRIBUTES, AspectCytoscape.CY_SUBNETWORKS, Constant.S, Constant.Id, false);
-  validatePropertyValueExistence(AspectCore.EDGE_ATTRIBUTES, AspectCytoscape.CY_SUBNETWORKS, Constant.S, Constant.Id, false);
-  validatePropertyValueExistence(AspectCore.NETWORK_ATTRIBUTES, AspectCytoscape.CY_SUBNETWORKS, Constant.S, Constant.Id, false);
+  validatePropertyValueExistence(
+    AspectCytoscape.CY_HIDDEN_ATTRIBUTES,
+    AspectCytoscape.CY_SUBNETWORKS,
+    Constant.S,
+    Constant.Id,
+    false,
+  );
+  validatePropertyValueExistence(
+    AspectCytoscape.CY_TABLE_COLUMN,
+    AspectCytoscape.CY_SUBNETWORKS,
+    Constant.S,
+    Constant.Id,
+    false,
+  );
+  validatePropertyValueExistence(
+    AspectCore.NODE_ATTRIBUTES,
+    AspectCytoscape.CY_SUBNETWORKS,
+    Constant.S,
+    Constant.Id,
+    false,
+  );
+  validatePropertyValueExistence(
+    AspectCore.EDGE_ATTRIBUTES,
+    AspectCytoscape.CY_SUBNETWORKS,
+    Constant.S,
+    Constant.Id,
+    false,
+  );
+  validatePropertyValueExistence(
+    AspectCore.NETWORK_ATTRIBUTES,
+    AspectCytoscape.CY_SUBNETWORKS,
+    Constant.S,
+    Constant.Id,
+    false,
+  );
 
-  validatePropertyValueExistence(AspectCytoscape.CY_GROUPS, AspectCore.EDGES, Constant.External_Edges, Constant.Id, true);
-  validatePropertyValueExistence(AspectCytoscape.CY_GROUPS, AspectCore.EDGES, Constant.Internal_Edges, Constant.Id, true);
+  validatePropertyValueExistence(
+    AspectCytoscape.CY_GROUPS,
+    AspectCore.EDGES,
+    Constant.External_Edges,
+    Constant.Id,
+    true,
+  );
+  validatePropertyValueExistence(
+    AspectCytoscape.CY_GROUPS,
+    AspectCore.EDGES,
+    Constant.Internal_Edges,
+    Constant.Id,
+    true,
+  );
   validatePropertyValueExistence(AspectCytoscape.CY_SUBNETWORKS, AspectCore.NODES, Constant.Nodes, Constant.Id, true);
   validatePropertyValueExistence(AspectCytoscape.CY_SUBNETWORKS, AspectCore.EDGES, Constant.Edges, Constant.Id, true);
 }
