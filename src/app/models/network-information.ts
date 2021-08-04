@@ -5,9 +5,14 @@ export interface NetworkInformation {
   name?: string;
 
   /**
-   * Rightsholder for this network
+   * RightsHolder for this network
    */
-  rightsholder?: string;
+  rightsHolder?: string;
+
+  /**
+   * Rights for this network
+   */
+  rights?: string;
 
   /**
    * Type of network
@@ -33,4 +38,14 @@ export interface NetworkInformation {
    * UUID
    */
   uuid?: string;
+
+  /**
+   * version
+   */
+  version?: string;
+
+  /**
+   * author
+   */
+  author?: string;
 }

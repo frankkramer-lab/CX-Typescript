@@ -27,7 +27,6 @@ import { Status } from '../models/status';
   providedIn: 'root',
 })
 export class ParseService {
-  network: Network = { networkInformation: {}, aspects: [] };
   aspectElementsMap: {
     [key: string]: any;
   } = {
@@ -53,6 +52,8 @@ export class ParseService {
    * @returns Network
    */
   parseCXToObjects(data: any[]): Network {
+   let network: Network = { networkInformation: {}, aspects: [], editorOption: {} };
+
     // loop on the aspects read from the CX file
     data.map((aspect: any, aspectIndex: number) => {
       // get aspect names
@@ -61,16 +62,16 @@ export class ParseService {
       if (key === AspectSettings.NUMBER_VERIFICATION) {
         (aspect[key] as NumberVerification[]).map(
           (numberVerification: NumberVerification) => {
-            this.network.numberVerification = numberVerification;
+            network.numberVerification = numberVerification;
           }
         );
       } else if (key === AspectSettings.METADATA) {
         (aspect[key] as Metadata[]).map((metadata: Metadata) => {
-          this.parseMetaData(aspectIndex, metadata);
+          this.parseMetaData(network, aspectIndex, metadata);
         });
       } else if (key === AspectSettings.STATUS) {
         (aspect[key] as Status[]).map((status: Status) => {
-          this.network.status = status;
+          network.status = status;
         });
       } else if (
         Object.values(AspectCore).includes(key as AspectCore) ||
@@ -78,13 +79,13 @@ export class ParseService {
       ) {
         const aspectElementType = this.aspectElementsMap[key];
 
-        let networkAspect = this.network.aspects?.find(
+        let networkAspect = network.aspects?.find(
           (aspect) => aspect.name === key
         );
 
         if (networkAspect === undefined) {
           networkAspect = new Aspect<typeof aspectElementType>(key);
-          this.network.aspects?.push(networkAspect);
+          network.aspects?.push(networkAspect);
         }
         aspect[key].map((aspectElement: any) => {
           const parsedElement = this.parseAspectElements(
@@ -98,22 +99,34 @@ export class ParseService {
             var networkAttribute = parsedElement as NetworkAttributes;
             switch (networkAttribute.name) {
               case 'name':
-                this.network.networkInformation!.name = networkAttribute.value;
+                network.networkInformation!.name = networkAttribute.value;
                 break;
               case 'rightsHolder':
-                this.network.networkInformation!.rightsholder =
+                network.networkInformation!.rightsHolder =
+                  networkAttribute.value;
+                break;
+              case 'rights':
+                network.networkInformation!.rights =
                   networkAttribute.value;
                 break;
               case 'networkType':
-                this.network.networkInformation!.networkType =
+                network.networkInformation!.networkType =
                   networkAttribute.value;
                 break;
               case 'organism':
-                this.network.networkInformation!.organism =
+                network.networkInformation!.organism =
                   networkAttribute.value;
                 break;
               case 'description':
-                this.network.networkInformation!.description =
+                network.networkInformation!.description =
+                  networkAttribute.value;
+                break;
+              case 'version':
+                network.networkInformation!.version =
+                  networkAttribute.value;
+                break;
+              case 'author':
+                network.networkInformation!.author =
                   networkAttribute.value;
                 break;
             }
@@ -121,7 +134,7 @@ export class ParseService {
         });
       }
     });
-    return this.network;
+    return network;
   }
 
   parseAspectElements<Type extends AspectElement>(
@@ -131,20 +144,20 @@ export class ParseService {
     return new type().parseElement(...args);
   }
 
-  private parseMetaData(aspectIndex: number, metadata: Metadata): void {
+  private parseMetaData(network: Network, aspectIndex: number, metadata: Metadata): void {
     if (aspectIndex === 1) {
       const preMetaDataAspect = new Aspect(metadata.name);
       preMetaDataAspect.aspectPreMetaData = metadata;
-      this.network.aspects?.push(preMetaDataAspect);
+      network.aspects?.push(preMetaDataAspect);
     } else {
-      let postMetaDataAspect = this.network.aspects?.find(
+      let postMetaDataAspect = network.aspects?.find(
         (aspect) => aspect.name === metadata.name
       );
       if (postMetaDataAspect !== undefined) {
         postMetaDataAspect.aspectPostMetaData = metadata;
       } else {
         postMetaDataAspect = new Aspect(metadata.name);
-        this.network.aspects?.push(postMetaDataAspect);
+        network.aspects?.push(postMetaDataAspect);
       }
     }
   }
