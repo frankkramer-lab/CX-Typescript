@@ -37,10 +37,12 @@ export class NetworkService {
   }
 
   getNetworkInCxFormat(networkUUID: string) {
-    return this.http.get(
-      this.ndexPublicApiHost + '/network/' + networkUUID,
-      this.options
-    );
+    return this.http.get(this.ndexPublicApiHost + '/network/' + networkUUID, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      responseType: 'text',
+    });
   }
 
   addNetwork(network: Network) {
@@ -59,7 +61,7 @@ export class NetworkService {
     );
   }
 
-  setSelectedNetwork(network: any) {
-    this.selectedNetwork$.next(network);
+  setSelectedNetwork$(selectedNetwork: Network) {
+    this.selectedNetwork$.next(selectedNetwork);
   }
 }
