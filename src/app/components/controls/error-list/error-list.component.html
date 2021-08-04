@@ -1,0 +1,26 @@
+<div *ngIf="errors">
+  <accordion *ngFor="let key of objectKeys(errors)" [isAnimated]="true">
+    <accordion-group>
+      <button class="btn btn-link" accordion-heading type="button">
+        {{ key }}
+        <span class="badge badge-danger">{{ errors[key].length }}</span>
+      </button>
+      <div
+        *ngFor="let value of errors[key]"
+        class="border-bottom border-top border-danger"
+      >
+        <p>
+          <span class="font-weight-bold">Error Message:</span>
+          {{ value.message }}
+        </p>
+
+        <p *ngFor="let location of value.loc">
+          <span class="font-weight-bold">Error Location:</span>
+          <a href="javascript:;" (click)="sendErrorLocation(location)">
+            line: {{ location.value.line }}, col: {{ location.value.column }}
+          </a>
+        </p>
+      </div>
+    </accordion-group>
+  </accordion>
+</div>
