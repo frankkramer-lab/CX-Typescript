@@ -1,2 +1,24 @@
-@import "~bootstrap/scss/bootstrap.scss";
+.myGlyphMarginClass {
+  display: block;
+  background-image: url('./assets/images/error-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
 
+}
+.myContentClass {
+	background: lightblue;
+}
+
+.panel-body.card-block.card-body {
+  padding: 0rem;
+}
+
+gridster-item {
+overflow: auto !important;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+/* Importing Datepicker SCSS file. */
+@import "~ngx-bootstrap/datepicker/bs-datepicker";

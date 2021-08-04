@@ -3,7 +3,11 @@ import {
   MonacoEditorComponent,
   MonacoEditorLoaderService,
 } from '@materia-ui/ngx-monaco-editor';
-import { filter, take } from 'rxjs/operators';
+import { Network } from 'src/app/models/network';
+import { NetworkService } from 'src/app/services/network.service';
+
+import { Validator } from 'cx-typescript';
+import { ErrorsService } from 'src/app/services/errors.service';
 
 @Component({
   selector: 'app-editor',
@@ -13,23 +17,163 @@ import { filter, take } from 'rxjs/operators';
 export class EditorComponent implements OnInit {
   @ViewChild(MonacoEditorComponent)
   monacoComponent!: MonacoEditorComponent;
-  editorOptions = { theme: 'vs-dark', language: 'json', glyphMargin: true };
+  editorOptions = {
+    theme: 'vs-dark',
+    language: 'json',
+    glyphMargin: true,
+    smoothScrolling: true,
+  };
   code: string = '';
   loadingEditor = true;
+  selectedNetwork!: Network;
+  decorations: any = [];
 
-  constructor(private monacoLoaderService: MonacoEditorLoaderService) {}
+  constructor(
+    public monacoLoaderService: MonacoEditorLoaderService,
+    public networkService: NetworkService,
+    private errorService: ErrorsService
+  ) {}
 
   ngOnInit() {
-    // this.monacoLoaderService.isMonacoLoaded$
-    //   .pipe(
-    //     filter((isLoaded) => !!isLoaded),
-    //     take(1)
-    //   )
-    //   .subscribe(() => {
-    //   });
+    this.networkService.selectedNetwork$.subscribe(
+      (selectedNetwork: any) => {
+        const monaco = window.monaco;
+        if (!selectedNetwork) {
+          return;
+        }
+        if (!this.selectedNetwork) {
+          // if this is the first time the user is pressing on a network
+          this.selectedNetwork = selectedNetwork;
+          let model = monaco.editor.createModel(
+            selectedNetwork.editorOption!.networkTxt,
+            'json'
+          );
+          selectedNetwork.editorOption!.editorModel = model;
+          this.monacoComponent.editor.setModel(model);
+          this.validateEditor();
+        } else {
+          this.selectedNetwork.editorOption!.editorModel =
+            this.monacoComponent.editor.getModel();
+          this.selectedNetwork.editorOption!.editorState =
+            this.monacoComponent.editor.saveViewState();
+
+          if (!selectedNetwork.editorOption?.editorModel) {
+            let model = monaco.editor.createModel(
+              selectedNetwork.editorOption!.networkTxt,
+              'json'
+            );
+            selectedNetwork.editorOption!.editorModel = model;
+            this.monacoComponent.editor.setModel(model);
+          } else {
+            this.monacoComponent.editor.setModel(
+              selectedNetwork.editorOption!.editorModel
+            );
+          }
+
+          if (selectedNetwork.editorOption?.editorState) {
+            this.monacoComponent.editor.restoreViewState(
+              selectedNetwork.editorOption?.editorState
+            );
+          }
+          this.selectedNetwork = selectedNetwork;
+
+          this.validateEditor();
+          this.monacoComponent.editor.focus();
+        }
+
+        this.monacoComponent.editor.getModel()?.onDidChangeContent((e) => {
+          this.validateEditor();
+        });
+
+        // this.monacoComponent.editor.onDidChangeCursorSelection((e) => {
+        //   var t = this.monacoComponent.model.getValueInRange(e.selection);
+        // });
+      }
+    );
+
+    this.subscribeToEditorLoadEvent();
+    this.subscribeToErrorLocationClick();
   }
 
-  onInit(event: any) {
-    this.loadingEditor = false;
+  private subscribeToEditorLoadEvent() {
+    this.monacoLoaderService.isMonacoLoaded$.subscribe((isLoaded: boolean) => {
+      this.loadingEditor = !isLoaded;
+    });
+  }
+
+  private subscribeToErrorLocationClick() {
+    this.errorService.errorLocation$.subscribe((location: any) => {
+      this.monacoComponent.editor.revealRangeInCenterIfOutsideViewport(
+        {
+          startLineNumber: location.value.line,
+          startColumn: location.value.column,
+          endLineNumber: location.valueEnd.line,
+          endColumn: location.valueEnd.column,
+        },
+        monaco.editor.ScrollType.Smooth
+      );
+
+      let startLine = location.value.line;
+      let startColumn = location.value.column;
+      if (location.key !== undefined) {
+        startLine = location.key.line;
+        startColumn = location.key.column;
+      }
+      this.monacoComponent.editor.setSelection({
+        selectionStartLineNumber: startLine,
+        selectionStartColumn: startColumn + 1,
+        positionLineNumber: location.valueEnd.line,
+        positionColumn: location.valueEnd.column + 1,
+      });
+    });
+  }
+
+  private validateEditor() {
+    this.validateCxData().then((errors: any) => {
+      this.setErrorDecoration(errors);
+    });
+  }
+
+  private setErrorDecoration(errors: any) {
+    let newDecorations: any = [];
+    let validJsonFormat = true;
+    errors.map((error: any) => {
+      if (error.aspectName === 'invalid_json_format') {
+        validJsonFormat = false;
+      }
+      return error.loc?.map((errorLocation: any) => {
+        newDecorations.push({
+          range: new window.monaco.Range(
+            errorLocation.value.line,
+            1,
+            errorLocation.value.line,
+            1
+          ),
+          options: {
+            isWholeLine: true,
+            glyphMarginClassName: 'myGlyphMarginClass',
+            glyphMarginHoverMessage: { value: error.message },
+          },
+        });
+      });
+    });
+
+    this.selectedNetwork.errors = errors;
+    this.errorService.setNetworkErrors$(errors);
+    if (validJsonFormat) {
+      this.decorations = this.monacoComponent.editor.deltaDecorations(
+        this.decorations,
+        newDecorations
+      );
+    }
+  }
+
+  private validateCxData() {
+    return new Promise((resolve, reject) => {
+      const errors = Validator.validateCxData(
+        this.monacoComponent.editor.getModel()?.getValue()
+      );
+      resolve(errors);
+    });
   }
 }
