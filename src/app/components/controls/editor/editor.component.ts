@@ -35,64 +35,27 @@ export class EditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.subscribeToSelectedNetowrkChange();
+    this.subscribeToEditorLoadEvent();
+    this.subscribeToErrorLocationClick();
+  }
+
+  private subscribeToSelectedNetowrkChange() {
     this.networkService.selectedNetwork$.subscribe(
-      (selectedNetwork: any) => {
-        const monaco = window.monaco;
+      (selectedNetwork: Network) => {
         if (!selectedNetwork) {
           return;
         }
-        if (!this.selectedNetwork) {
-          // if this is the first time the user is pressing on a network
-          this.selectedNetwork = selectedNetwork;
-          let model = monaco.editor.createModel(
-            selectedNetwork.editorOption!.networkTxt,
-            'json'
-          );
-          selectedNetwork.editorOption!.editorModel = model;
-          this.monacoComponent.editor.setModel(model);
-          this.validateEditor();
-        } else {
-          this.selectedNetwork.editorOption!.editorModel =
-            this.monacoComponent.editor.getModel();
-          this.selectedNetwork.editorOption!.editorState =
-            this.monacoComponent.editor.saveViewState();
-
-          if (!selectedNetwork.editorOption?.editorModel) {
-            let model = monaco.editor.createModel(
-              selectedNetwork.editorOption!.networkTxt,
-              'json'
-            );
-            selectedNetwork.editorOption!.editorModel = model;
-            this.monacoComponent.editor.setModel(model);
-          } else {
-            this.monacoComponent.editor.setModel(
-              selectedNetwork.editorOption!.editorModel
-            );
-          }
-
-          if (selectedNetwork.editorOption?.editorState) {
-            this.monacoComponent.editor.restoreViewState(
-              selectedNetwork.editorOption?.editorState
-            );
-          }
-          this.selectedNetwork = selectedNetwork;
-
-          this.validateEditor();
-          this.monacoComponent.editor.focus();
-        }
-
+        this.manageEditorState(selectedNetwork);
         this.monacoComponent.editor.getModel()?.onDidChangeContent((e) => {
           this.validateEditor();
         });
 
-        // this.monacoComponent.editor.onDidChangeCursorSelection((e) => {
-        //   var t = this.monacoComponent.model.getValueInRange(e.selection);
-        // });
+        this.monacoComponent.editor.onDidChangeCursorSelection((e) => {
+          var t = this.monacoComponent.model.getValueInRange(e.selection);
+        });
       }
     );
-
-    this.subscribeToEditorLoadEvent();
-    this.subscribeToErrorLocationClick();
   }
 
   private subscribeToEditorLoadEvent() {
@@ -110,7 +73,7 @@ export class EditorComponent implements OnInit {
           endLineNumber: location.valueEnd.line,
           endColumn: location.valueEnd.column,
         },
-        monaco.editor.ScrollType.Smooth
+        window.monaco.editor.ScrollType.Smooth
       );
 
       let startLine = location.value.line;
@@ -126,6 +89,47 @@ export class EditorComponent implements OnInit {
         positionColumn: location.valueEnd.column + 1,
       });
     });
+  }
+
+  private manageEditorState(selectedNetwork: Network) {
+    if (!this.selectedNetwork) {
+      // if this is the first time the user is pressing on a network
+      this.selectedNetwork = selectedNetwork;
+      this.createMonacoModel(selectedNetwork);
+      this.validateEditor();
+    } else {
+      this.selectedNetwork.editorOption!.editorModel =
+        this.monacoComponent.editor.getModel();
+      this.selectedNetwork.editorOption!.editorState =
+        this.monacoComponent.editor.saveViewState();
+
+      if (!selectedNetwork.editorOption?.editorModel) {
+        this.createMonacoModel(selectedNetwork);
+      } else {
+        this.monacoComponent.editor.setModel(
+          selectedNetwork.editorOption!.editorModel
+        );
+      }
+
+      if (selectedNetwork.editorOption?.editorState) {
+        this.monacoComponent.editor.restoreViewState(
+          selectedNetwork.editorOption?.editorState
+        );
+      }
+      this.selectedNetwork = selectedNetwork;
+
+      this.validateEditor();
+      this.monacoComponent.editor.focus();
+    }
+  }
+
+  private createMonacoModel(selectedNetwork: Network) {
+    let model = window.monaco.editor.createModel(
+      selectedNetwork.editorOption!.networkTxt,
+      'json'
+    );
+    selectedNetwork.editorOption!.editorModel = model;
+    this.monacoComponent.editor.setModel(model);
   }
 
   private validateEditor() {
