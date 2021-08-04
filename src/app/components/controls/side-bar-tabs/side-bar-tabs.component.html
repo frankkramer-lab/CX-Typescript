@@ -1,0 +1,16 @@
+<tabset>
+  <tab heading="Upload">
+    <app-side-bar-manage></app-side-bar-manage>
+  </tab>
+  <tab heading="Info"><app-network-information></app-network-information></tab>
+  <tab>
+    <ng-template tabHeading>
+      Errors
+      <span class="badge badge-danger" *ngIf="errorLength > 0">{{
+        errorLength
+      }}</span>
+    </ng-template>
+    <app-error-list (errorLength)="getErrorsLength($event)"></app-error-list>
+  </tab>
+  <tab heading="Statistics">Basic content 2</tab>
+</tabset>
