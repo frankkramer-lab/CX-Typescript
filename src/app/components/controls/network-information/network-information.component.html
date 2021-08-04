@@ -1,0 +1,41 @@
+<accordion [isAnimated]="true">
+  <accordion-group heading="Network Information" *ngIf="network?.networkInformation">
+    <div *ngIf="network?.networkInformation?.name">
+      <h6>Name</h6>
+      <p>{{ network?.networkInformation?.name }}</p>
+    </div>
+
+    <div *ngIf="network?.networkInformation?.version">
+      <h6>Version</h6>
+      <p>{{ network?.networkInformation?.version }}</p>
+    </div>
+
+    <div *ngIf="network?.networkInformation?.rightsHolder">
+      <h6>Rights Holder</h6>
+      <p>{{ network?.networkInformation?.rightsHolder }}</p>
+    </div>
+
+    <div *ngIf="network?.networkInformation?.rights">
+      <h6>Rights</h6>
+      <p>{{ network?.networkInformation?.rights }}</p>
+    </div>
+
+    <div *ngIf="network?.networkInformation?.author">
+      <h6>Author</h6>
+      <p>{{ network?.networkInformation?.author }}</p>
+    </div>
+  </accordion-group>
+
+  <accordion-group
+    heading="Description"
+    *ngIf="network?.networkInformation?.description"
+  >
+    <p [innerHTML]="network?.networkInformation?.description"></p>
+  </accordion-group>
+
+  <accordion-group heading="Aspects" *ngIf="network?.aspects">
+    <div class="card" *ngFor="let aspect of network?.aspects">
+      <h5 class="card-header">{{aspect.name}}</h5>
+    </div>
+  </accordion-group>
+</accordion>
