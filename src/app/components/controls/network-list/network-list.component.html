@@ -1,7 +1,27 @@
 <h5>Available networks</h5>
 
 <div *ngFor="let network of networks">
-  <p>
-    {{network.networkInformation?.name}}
-</p>
+  <div class="border-bottom">
+    {{ network.networkInformation?.name }}
+    <button
+      class="btn btn-outline-secondary btn-sm mr-1"
+      type="button"
+      placement="bottom"
+      tooltip="Show file content in the editor"
+      (click)="setSelectedNetwork(network)"
+    >
+      <i class="fa fa-file-text" aria-hidden="true"></i>
+    </button>
+
+    <button
+    class="btn btn-outline-secondary btn-sm mr-1"
+    type="button"
+    placement="bottom"
+    tooltip="Download as .cx file"
+    (click)="downloadNetwork(network)"
+  >
+    <i class="fa fa-download" aria-hidden="true"></i>
+  </button>
+
+  </div>
 </div>
