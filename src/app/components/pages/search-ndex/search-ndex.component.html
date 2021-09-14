@@ -1,0 +1,123 @@
+<div>
+  <img src="../../../../assets/images/ndex.png" class="center" />
+
+  <div class="input-group input-group-sm mb-3">
+    <input
+      class="form-control form-control-sm"
+      placeholder="Search for networks, users, and groups"
+      type="text"
+      [(ngModel)]="networkService.searchString"
+    />
+    <div class="input-group-append">
+      <button
+        (click)="searchFromNdex()"
+        [disabled]="loadingHttp"
+        class="btn btn-outline-secondary btn-sm"
+        placement="bottom"
+        type="button"
+      >
+        <span
+          *ngIf="loadingHttp"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <i class="fa fa-search" aria-hidden="true">
+          {{ loadingHttp === false ? "Search" : "Loading..." }}
+        </i>
+      </button>
+
+      <button
+        (click)="downloadAllNetworks()"
+        [disabled]="loadingAllNetowrks || networkService.searchedNetworks?.length <= 0"
+        class="btn btn-outline-secondary btn-sm"
+        placement="bottom"
+        type="button"
+      >
+        <span
+          *ngIf="loadingAllNetowrks"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <i class="fa fa-download" aria-hidden="true">
+          {{ loadingAllNetowrks && networkService.searchedNetworks?.length > 0 ? "Downloading..." : "Download all networks" }}
+        </i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- list of networks -->
+
+<table
+  class="table table-hover"
+  *ngIf="networkService.searchedNetworks?.length > 0"
+>
+  <thead>
+    <tr>
+      <th scope="col">Network Name</th>
+      <th scope="col">Nodes</th>
+      <th scope="col">Edges</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+
+  <tr *ngFor="let network of networkService.searchedNetworks">
+    <td>{{ network?.name }}</td>
+    <td>{{ network?.nodeCount | number }}</td>
+    <td>{{ network?.edgeCount | number }}</td>
+    <td>
+      <button
+        class="btn btn-outline-secondary btn-sm mr-1"
+        type="button"
+        placement="bottom"
+        [disabled]="network?.percentage > 0 || checkNodesAndEdgesSize(network)"
+        (click)="download(network)"
+      >
+        <i class="fa fa-download" aria-hidden="true"></i>
+      </button>
+      <button
+        *ngIf="network?.done"
+        class="btn btn-outline-secondary btn-sm mr-1"
+        type="button"
+        placement="bottom"
+        (click)="showNetworkInEditor(network)"
+      >
+        <i class="fa fa-file-text" aria-hidden="true"></i>
+      </button>
+      <button
+        *ngIf="network?.done"
+        class="btn btn-outline-secondary btn-sm mr-1"
+        type="button"
+        placement="bottom"
+        (click)="showNetworkInformation(network)"
+      >
+        <i class="fa fa-info" aria-hidden="true"></i>
+      </button>
+      <button
+        *ngIf="network?.done"
+        class="btn btn-outline-secondary btn-sm mr-1"
+        type="button"
+        placement="bottom"
+        (click)="showNetworkStatistics(network)"
+      >
+        <i class="fa fa-line-chart" aria-hidden="true"></i>
+      </button>
+    </td>
+    <td>
+      <progressbar
+        *ngIf="network.percentage && !checkNodesAndEdgesSize(network)"
+        [value]="network.percentage"
+        [type]="network.progressbarType"
+        [striped]="true"
+        [animate]="network.percentage !== 100"
+        ><i>{{ network.percentage | number }} / 100</i></progressbar
+      >
+      <p *ngIf="checkNodesAndEdgesSize(network)" class="size-message">
+        Exceed Size limit
+      </p>
+    </td>
+  </tr>
+</table>
