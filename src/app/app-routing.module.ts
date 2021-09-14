@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DocumentationComponent } from './components/pages/documentation/documentation.component';
 import { EditComponent } from './components/pages/edit/edit.component';
 import { HomeComponent } from './components/pages/home/home.component';
 import { SearchNdexComponent } from './components/pages/search-ndex/search-ndex.component';
@@ -12,11 +11,11 @@ const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
   },
-  {
-    path: 'doc',
-    component: DocumentationComponent,
-    pathMatch: 'full',
-  },
+  // {
+  //   path: 'doc',
+  //   component: DocumentationComponent,
+  //   pathMatch: 'full',
+  // },
   {
     path: 'editor',
     component: EditComponent,

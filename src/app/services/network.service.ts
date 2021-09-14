@@ -75,8 +75,8 @@ export class NetworkService {
     this.networks.push(network);
     const searchedNetworkInstance = this.searchedNetworks.find(
       (item) =>
-        item.externalId === network.networkInformation.uuid ||
-        item.name === network.networkInformation.name
+        item.externalId === network?.networkInformation?.uuid ||
+        item.name === network?.networkInformation?.name
     );
     if (searchedNetworkInstance !== undefined) {
       this.updateNetworkProgressBarValues(searchedNetworkInstance);
@@ -95,11 +95,11 @@ export class NetworkService {
     );
   }
 
-  setSelectedNetwork$(selectedNetwork: Network) {
+  setSelectedNetwork$(selectedNetwork: any) {
     this.selectedNetwork$.next(selectedNetwork);
   }
 
-  setNetowrkInDashboard$(selectedNetwork: Network) {
+  setNetowrkInDashboard$(selectedNetwork: any) {
     this.netowrkInDashboard$.next(selectedNetwork);
   }
 

@@ -14,7 +14,6 @@ import { GridsterModule } from 'angular-gridster2';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { HomeComponent } from './components/pages/home/home.component';
-import { DocumentationComponent } from './components/pages/documentation/documentation.component';
 import { StatisticsComponent } from './components/pages/statistics/statistics.component';
 import { EditComponent } from './components/pages/edit/edit.component';
 
@@ -58,7 +57,6 @@ import { AttributesCoverageByAspectComponent } from './components/controls/attri
     AttributesCoverageByAspectComponent,
 
     HomeComponent,
-    DocumentationComponent,
     StatisticsComponent,
     SearchNdexComponent,
     EditComponent,

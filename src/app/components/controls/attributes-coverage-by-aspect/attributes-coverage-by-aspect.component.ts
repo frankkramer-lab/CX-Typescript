@@ -99,7 +99,7 @@ export class AttributesCoverageByAspectComponent implements OnInit {
     this.numberOfAspectElements -= aspectLength;
 
     const aspect = network.aspects.find(
-      (obj) => obj.name === this.aspectName.toLowerCase()
+      (obj) => obj.name === this.aspectAttributeName.toLowerCase()
     );
     if (aspect !== undefined) {
       aspect.aspectElements.forEach((element) => {
