@@ -52,7 +52,7 @@ export class ParseService {
    * @returns Network
    */
   parseCXToObjects(data: any[]): Network {
-   let network: Network = { networkInformation: {}, aspects: [], editorOption: {} };
+   let network: Network = { networkInformation: {}, aspects: [], editorOption: {}, showInDashboard: true };
 
     // loop on the aspects read from the CX file
     data.map((aspect: any, aspectIndex: number) => {

@@ -35,4 +35,6 @@ export interface Network {
    * This field represents error messages for a specific network
    */
    errors?: ErrorMessage[];
+
+   showInDashboard?: boolean;
 }
