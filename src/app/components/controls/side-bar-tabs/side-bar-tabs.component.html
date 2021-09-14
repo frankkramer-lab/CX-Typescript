@@ -1,4 +1,4 @@
-<tabset>
+<tabset #tabset>
   <tab heading="Upload">
     <app-side-bar-manage></app-side-bar-manage>
   </tab>
@@ -12,5 +12,7 @@
     </ng-template>
     <app-error-list (errorLength)="getErrorsLength($event)"></app-error-list>
   </tab>
-  <tab heading="Statistics">Basic content 2</tab>
+  <tab heading="Statistics"
+    ><app-network-statistics></app-network-statistics
+  ></tab>
 </tabset>

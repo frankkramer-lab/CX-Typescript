@@ -1,5 +1,8 @@
 <accordion [isAnimated]="true">
-  <accordion-group heading="Network Information" *ngIf="network?.networkInformation">
+  <accordion-group
+    heading="Network Information"
+    *ngIf="network?.networkInformation"
+  >
     <div *ngIf="network?.networkInformation?.name">
       <h6>Name</h6>
       <p>{{ network?.networkInformation?.name }}</p>
@@ -35,7 +38,14 @@
 
   <accordion-group heading="Aspects" *ngIf="network?.aspects">
     <div class="card" *ngFor="let aspect of network?.aspects">
-      <h5 class="card-header">{{aspect.name}}</h5>
+      <button class="btn btn-link" accordion-heading type="button">
+        <h5 class="card-title">
+          {{ aspect.name }}
+          <span class="badge badge-info">{{
+            aspect?.aspectElements.length | number
+          }}</span>
+        </h5>
+      </button>
     </div>
   </accordion-group>
 </accordion>

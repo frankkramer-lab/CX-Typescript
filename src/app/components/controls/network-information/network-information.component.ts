@@ -8,7 +8,7 @@ import { NetworkService } from 'src/app/services/network.service';
   styleUrls: ['./network-information.component.scss'],
 })
 export class NetworkInformationComponent implements OnInit {
-  network!: Network;
+  network: Network;
   constructor(private networkService: NetworkService) {}
 
   ngOnInit() {

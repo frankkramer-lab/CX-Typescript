@@ -3,20 +3,21 @@ import { Network } from 'src/app/models/network';
 import { NetworkService } from 'src/app/services/network.service';
 
 @Component({
-  selector: 'app-network-list',
-  templateUrl: './network-list.component.html',
-  styleUrls: ['./network-list.component.scss'],
+  selector: 'app-network-list-editor',
+  templateUrl: './network-list-editor.component.html',
+  styleUrls: ['./network-list-editor.component.scss'],
 })
-export class NetworkListComponent implements OnInit {
+export class NetworkListEditorComponent implements OnInit {
   @Input()
   networks!: Network[];
-  constructor(public networkService: NetworkService) {}
+  constructor(private networkService: NetworkService) {}
 
   ngOnInit() {}
 
   setSelectedNetwork(network: Network) {
-    const networkIdentifier = network.networkInformation?.uuid || network.networkInformation?.name;
-    if(networkIdentifier !== undefined) {
+    const networkIdentifier =
+      network.networkInformation?.uuid || network.networkInformation?.name;
+    if (networkIdentifier !== undefined) {
       this.networkService.setSelectedNetwork$(network);
     }
   }
