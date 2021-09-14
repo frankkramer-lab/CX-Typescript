@@ -4,10 +4,10 @@ import { AspectElement } from './aspect-element';
  * This class represents the aspect elements for the Edges
  */
 export class Edges extends AspectElement {
-  private _id!: number;
-  private _source!: number;
-  private _target!: number;
-  private _interaction?: string | undefined;
+  private '@id'!: number;
+  private s!: number;
+  private t!: number;
+  private i?: string | undefined;
 
   constructor() {
     super();
@@ -32,43 +32,43 @@ export class Edges extends AspectElement {
    * All edge ids must be unique in the edge aspect
    */
   public get id(): number {
-    return this._id;
+    return this['@id'];
   }
 
   /**
    * Source node connected by the edge
    */
   public get source(): number {
-    return this._source;
+    return this.s;
   }
 
   /**
    * Target node connected by the edge
    */
   public get target(): number {
-    return this._target;
+    return this.t;
   }
 
   /**
    * Interaction field
    */
   public get interaction(): string | undefined {
-    return this._interaction;
+    return this.i;
   }
 
   public set id(value: number) {
-    this._id = value;
+    this['@id'] = value;
   }
 
   public set source(value: number) {
-    this._source = value;
+    this.s = value;
   }
 
   public set target(value: number) {
-    this._target = value;
+    this.t = value;
   }
 
   public set interaction(value: string | undefined) {
-    this._interaction = value;
+    this.i = value;
   }
 }

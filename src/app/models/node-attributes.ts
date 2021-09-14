@@ -6,7 +6,7 @@ import { AspectElement } from './aspect-element';
  */
 export class NodeAttributes extends AspectElement {
   private _property!: number;
-  private _name!: string;
+  private n!: string;
   private _value!: any;
   private _dataType?: DataTypes | undefined;
   private _subNetworkId?: number | undefined;
@@ -64,7 +64,7 @@ export class NodeAttributes extends AspectElement {
    * Attribute name
    */
   public get name(): string {
-    return this._name;
+    return this.n;
   }
 
   /**
@@ -92,7 +92,7 @@ export class NodeAttributes extends AspectElement {
   }
 
   public set name(value: string) {
-    this._name = value;
+    this.n = value;
   }
 
   public set value(value: any) {

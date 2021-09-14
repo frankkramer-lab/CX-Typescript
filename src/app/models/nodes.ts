@@ -4,9 +4,9 @@ import { AspectElement } from './aspect-element';
  * This class represents aspect elements for the Nodes aspect
  */
 export class Nodes extends AspectElement {
-  private _id!: number;
-  private _name?: string | undefined;
-  private _represents?: string | undefined;
+  private '@id'!: number;
+  private n?: string | undefined;
+  private r?: string | undefined;
 
   constructor() {
     super();
@@ -25,32 +25,32 @@ export class Nodes extends AspectElement {
    * All node ids must be unique in the node aspect
    */
   public get id(): number {
-    return this._id;
+    return this['@id'];
   }
 
   /**
    * Node name (single string)
    */
   public get name(): string | undefined {
-    return this._name;
+    return this.n;
   }
 
   /**
    * Represents attribute  (single string)
    */
   public get represents(): string | undefined {
-    return this._represents;
+    return this.r;
   }
 
   public set id(value: number) {
-    this._id = value;
+    this['@id'] = value;
   }
 
   public set name(value: string | undefined) {
-    this._name = value;
+    this.n = value;
   }
 
   public set represents(value: string | undefined) {
-    this._represents = value;
+    this.r = value;
   }
 }
