@@ -1,0 +1,20 @@
+<div class="chart-container" style="padding: 10px; border: 1px solid white">
+  <div style="height: 20px; font-size: 12px">
+    <ng-container *ngFor="let item of treemapPath; let last = last">
+      <button class="btn btn-link" [class.active]="last" [disabled]="last" (click)="treemapSelect(item)">
+        {{ item.name }} ({{ item.value }})
+      </button>
+      <span *ngIf="!last"> / </span>
+    </ng-container>
+  </div>
+  <ngx-charts-tree-map
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="treemap"
+    [animations]="true"
+    [tooltipDisabled]="false"
+    [gradient]="false"
+    (select)="treemapSelect($event)"
+  >
+  </ngx-charts-tree-map>
+</div>
