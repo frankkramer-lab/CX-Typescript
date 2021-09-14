@@ -1,0 +1,36 @@
+<div style="width: auto; height: 50%;">
+  <h5 class="dashboard-chart-title">Aspect coverage</h5>
+  <ngx-charts-bar-vertical
+    class="chart-container"
+    [scheme]="colorScheme"
+    [schemeType]="schemeType"
+    [results]="aspectRatio"
+    [animations]="true"
+    [gradient]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [legendTitle]="'names'"
+    [legendPosition]="legendPosition"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [tooltipDisabled]="false"
+    xAxisLabel="Aspects"
+    yAxisLabel="Ratio (in %)"
+    [showGridLines]="true"
+    [barPadding]="barPadding"
+    [roundDomains]="false"
+    [roundEdges]="false"
+    [noBarWhenZero]="false"
+    [showDataLabel]="false"
+  >
+  <ng-template #tooltipTemplate let-model="model">
+    <span>{{model.name}}
+      <span style="display: block; font-size: medium;">
+        {{model.extra.aspectOccurance | number}}
+      </span>
+    </span>
+</ng-template>
+
+  </ngx-charts-bar-vertical>
+</div>

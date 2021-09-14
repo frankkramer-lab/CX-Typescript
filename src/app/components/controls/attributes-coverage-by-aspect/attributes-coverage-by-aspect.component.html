@@ -1,0 +1,36 @@
+<div style="width: auto; height: 50%">
+  <h5 class="dashboard-chart-title">Coverage of {{aspectName}} by {{aspectAttributeName}} (more than 10%)</h5>
+  <ngx-charts-bar-vertical
+    class="chart-container"
+    [scheme]="colorScheme"
+    [schemeType]="schemeType"
+    [results]="aspectAttributeRatio"
+    [animations]="true"
+    [gradient]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [legendTitle]="'properties'"
+    [legendPosition]="legendPosition"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [tooltipDisabled]="false"
+    [xAxisLabel]="aspectAttributeName"
+    yAxisLabel="Ratio (in %)"
+    [showGridLines]="true"
+    [barPadding]="barPadding"
+    [roundDomains]="false"
+    [roundEdges]="false"
+    [noBarWhenZero]="false"
+    [showDataLabel]="false"
+  >
+  <ng-template #tooltipTemplate let-model="model">
+    <span>{{model.name}}
+      <span style="display: block; font-size: medium;">
+        {{model.extra.propertyOccurance | number}}
+      </span>
+    </span>
+</ng-template>
+
+  </ngx-charts-bar-vertical>
+</div>

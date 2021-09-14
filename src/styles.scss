@@ -17,8 +17,15 @@ gridster-item {
 overflow: auto !important;
 }
 
+.dashboard-chart-title {
+  display: inline-block;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
 /* Importing Datepicker SCSS file. */
 @import "~ngx-bootstrap/datepicker/bs-datepicker";
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

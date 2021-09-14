@@ -1,0 +1,58 @@
+<h5>Available Networks <span class="badge badge-info" *ngIf="networkService.networks.length > 0"> {{getSelectedNetworksLength()}} </span></h5>
+<button
+class="btn btn-outline-info btn-sm mr-1"
+type="button"
+placement="bottom"
+[disabled]="networkService.networks.length <= 0"
+(click)="selectAllNetwork()"
+>
+select all
+</button>
+<button
+class="btn btn-outline-info btn-sm mr-1"
+type="button"
+placement="bottom"
+[disabled]="networkService.networks.length <= 0"
+(click)="removeAllSelection()"
+>
+select none
+</button>
+
+<div *ngFor="let network of networkService.networks">
+  <div class="border-bottom">
+    {{ network.networkInformation?.name }}
+    <button
+      class="btn btn-outline-secondary btn-sm mr-1"
+      type="button"
+      placement="bottom"
+      (click)="showNetworkInEditor(network)"
+    >
+      <i class="fa fa-file-text" aria-hidden="true"></i>
+    </button>
+    <button
+      class="btn btn-outline-secondary btn-sm mr-1"
+      type="button"
+      placement="bottom"
+      (click)="showNetworkInformation(network)"
+    >
+      <i class="fa fa-info" aria-hidden="true"></i>
+    </button>
+    <button
+      class="btn btn-outline-secondary btn-sm mr-1"
+      type="button"
+      placement="bottom"
+      (click)="showNetworkStatistics(network)"
+    >
+      <i class="fa fa-line-chart" aria-hidden="true"></i>
+    </button>
+    <button
+    [ngClass]="{'btn btn-success' : network.showInDashboard === true, 'btn btn-outline-secondary': network.showInDashboard === false}"
+      class="btn-sm mr-1"
+      type="button"
+      placement="bottom"
+      (click)="showNetworkStatisticsInDashboard(network)"
+    >
+    <i class="fa fa-check" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>

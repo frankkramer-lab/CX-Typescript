@@ -1,0 +1,45 @@
+<div class="mb-3 grid-display">
+  <app-attributes-coverage
+    [data]="nodeAttributes"
+    [title]="nodeTitle"
+    (selectedAttribute)="setSelectedAttributes($event)"
+    *ngIf="nodeAttributes.length > 0"
+  ></app-attributes-coverage>
+</div>
+
+<div class="mb-3 grid-display">
+  <app-attributes-coverage
+    [data]="edgeAttributes"
+    [title]="edgeTitle"
+    (selectedAttribute)="setSelectedAttributes($event)"
+    *ngIf="edgeAttributes.length > 0"
+  ></app-attributes-coverage>
+</div>
+
+<div class="mb-3 grid-display">
+  <app-core-aspect-coverage-by-attributes
+    [aspect]="nodes"
+    [aspectAttribute]="nodeAttributes"
+    [title]="'Nodes'"
+    *ngIf="nodes.length > 0 && nodeAttributes.length > 0"
+  >
+  </app-core-aspect-coverage-by-attributes>
+</div>
+
+<div class="mb-3 grid-display">
+  <app-core-aspect-coverage-by-attributes
+    [aspect]="edges"
+    [aspectAttribute]="edgeAttributes"
+    [title]="'Edges'"
+    *ngIf="edges.length > 0 && edgeAttributes.length > 0"
+  >
+  </app-core-aspect-coverage-by-attributes>
+</div>
+
+<div class="mb-3 grid-display">
+  <app-venn-diagram
+    [aspectAttribute]="selectedNodeAttributes"
+    *ngIf="selectedNodeAttributes.length > 0"
+  >
+  </app-venn-diagram>
+</div>

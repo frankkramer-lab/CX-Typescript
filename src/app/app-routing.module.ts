@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DocumentationComponent } from './components/pages/documentation/documentation.component';
 import { EditComponent } from './components/pages/edit/edit.component';
 import { HomeComponent } from './components/pages/home/home.component';
+import { SearchNdexComponent } from './components/pages/search-ndex/search-ndex.component';
 import { StatisticsComponent } from './components/pages/statistics/statistics.component';
 
 const routes: Routes = [
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'editor',
     component: EditComponent,
+    pathMatch: 'full',
+  },
+  {
+    path: 'search',
+    component: SearchNdexComponent,
     pathMatch: 'full',
   },
   {

@@ -1,0 +1,11 @@
+<div style="height: 92vh; margin: 0; padding: 0">
+  <gridster [options]="options">
+    <gridster-item [item]="sideBarTabs">
+      <app-network-list-statistics></app-network-list-statistics>
+    </gridster-item>
+
+    <gridster-item [item]="dashboard">
+      <app-statistics-dashboard></app-statistics-dashboard>
+    </gridster-item>
+  </gridster>
+</div>
