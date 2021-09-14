@@ -5,8 +5,35 @@
 </div>
 
 <ngx-monaco-editor
+  #editor
   *ngIf="!loadingEditor"
   style="height: 100%"
   [options]="editorOptions"
   [(ngModel)]="code"
 ></ngx-monaco-editor>
+
+<ngb-toast
+  *ngIf="readingFile"
+  [autohide]="false"
+  (hidden)="readingFile = false"
+  class="bg-primary text-light"
+  style="position: absolute; top: 0; right: 0"
+>
+  <div class="spinner-border spinner-border-sm" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  reading file...
+</ngb-toast>
+<ngb-toast
+  *ngIf="validatingFile"
+  [autohide]="false"
+  (hidden)="validatingFile = false"
+  class="bg-primary text-light"
+  style="position: absolute; top: 60px; right: 0"
+>
+  <div class="spinner-border spinner-border-sm" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+
+  checking for potential errors...
+</ngb-toast>
