@@ -22,7 +22,6 @@ export class ErrorListComponent implements OnInit {
         omitKey: true,
       });
       this.errors = groupedErrors;
-      console.log(this.errors);
     });
   }
 

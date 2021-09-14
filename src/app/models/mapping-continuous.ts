@@ -122,9 +122,6 @@ export class MappingContinuous extends Mapping {
 
     for (const th of thresholds) {
       if (uniqueThresholds.includes(th)) {
-        console.log(
-          'Thresholds need to be distinct! No color gradient can be built!'
-        );
         return false;
       }
       uniqueThresholds.push(th);
