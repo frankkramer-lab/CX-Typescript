@@ -35,7 +35,7 @@ npm install localized-strings
 ```
 
 ### Validation 
-Using json-schema approach we validated the structure of CX files, by creating a json schema for every aspect with its corresponding set of elements.
+Using json-schema approach we validated the structure of CX files, by creating a json schema for each aspect with its corresponding set of elements.
 Schemas can be found in [src/schema](https://github.com/frankkramer-lab/CX-Typescript/tree/main/src/schema).
 Using ajv-errors we were able to define our own custom error messages, as well the ability to change the error message language (using localized-strings).
 We tried to get the errors to be as detailed as possible, that is why we are using the combination of ajv and json-source-map to get the location of the error inside the CX file.
