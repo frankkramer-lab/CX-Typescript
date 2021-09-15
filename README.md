@@ -49,14 +49,34 @@ We also checked the validity of relationships between different aspects using th
 If you want to check that the package works you can change this [line](https://github.com/frankkramer-lab/CX-Typescript/blob/main/test/networks/DrugBank%20-%20Carrier%20drugs.cx#L5) into `"longNumber": true` and it should return an error like this:
 
 ```
-numberVerification
-"longNumber" must be of type "number"
 [
-  {
-    value: { line: 5, column: 30, pos: 84 },
-    valueEnd: { line: 5, column: 34, pos: 88 },
-    key: { line: 5, column: 16, pos: 70 },
-    keyEnd: { line: 5, column: 28, pos: 82 }
-  }
+    {
+        "aspectName": "numberVerification",
+        "message": "\"longNumber\" must be of type \"number\"",
+        "loc": [
+            {
+                "value": {
+                    "line": 1,
+                    "column": 38,
+                    "pos": 38
+                },
+                "valueEnd": {
+                    "line": 1,
+                    "column": 43,
+                    "pos": 43
+                },
+                "key": {
+                    "line": 1,
+                    "column": 25,
+                    "pos": 25
+                },
+                "keyEnd": {
+                    "line": 1,
+                    "column": 37,
+                    "pos": 37
+                }
+            }
+        ]
+    }
 ]
 ```
