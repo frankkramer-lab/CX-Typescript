@@ -42,10 +42,9 @@ We tried to get the errors to be as detailed as possible, that is why we are usi
 
 We also checked the validity of relationships between different aspects using their internal ids.
 
-**P.S.:** Please make sure to pass the CX file as a string to the `validateCxData` method because `json-pointer` is handling the parsing in order to get error locations.
+**P.S** Please make sure to pass the CX file as a string to the `validateCxData` method because `json-pointer` is handling the parsing in order to get error locations.
  
 **Error validation example**
-If you run the code using the [DrugBank - Carrier drugs.cx](https://github.com/frankkramer-lab/CX-Typescript/blob/main/test/networks/DrugBank%20-%20Carrier%20drugs.cx)  (587 KB) the package will work.
 
 If you want to check that the package works you can change this [line](https://github.com/frankkramer-lab/CX-Typescript/blob/main/test/networks/DrugBank%20-%20Carrier%20drugs.cx#L5) into `"longNumber": true` and it should return an error like this:
 
