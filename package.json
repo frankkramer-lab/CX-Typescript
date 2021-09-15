@@ -13,6 +13,12 @@
   "author": "Hassan Assaad",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "ajv": "^8.6.3",
+    "ajv-errors": "^3.0.0",
+    "cx-typescript": "0.0.4",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "json-source-map": "^0.6.1",
+    "localized-strings": "^0.2.4"
   }
 }
