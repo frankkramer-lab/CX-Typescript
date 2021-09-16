@@ -1,27 +1,25 @@
-# CxAngularApp
+## Introduction:
+Biological signaling pathways, or biological networks in general form the basis of many bioinformatics analyzes. In order to be able to formally capture the complex relationships in these networks, various standards have been established, including the JSON-based Cytoscape Exchange (CX) format. Even if JSON is the standard format for data exchange in web applications, it is often difficult to ensure that the schema, structure and relationships are correctly implemented. The aim of this work is to model the data structure and dependencies in Typescript, to test them on official networks and to give a statistical overview of the elements used therein.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
+## Demo
+https://frankkramer-lab.github.io/CX-Typescript/
+
+## Getting started
+This project was generated with Angular CLI version 12.1.2.
+
+This website was build as an interface for the [CX-Typescript](https://github.com/frankkramer-lab/CX-Typescript) npm package.
+
+This website can be used by researchers to:
+- Validate their uploaded networks.
+- Run a statistics based on downloaded set of networks.
+- Check networks information.
 
 ## Development server
-
+Run `npm install` to download required packages. 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Next Step
+- [Further progression](https://github.com/frankkramer-lab/CX-Typescript/issues/8)
+- Integrate this website with [NDExEdit](https://github.com/frankkramer-lab/NDExEdit)
