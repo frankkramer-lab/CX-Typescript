@@ -14,12 +14,20 @@ This website can be used by researchers to:
 - Run a statistics based on downloaded set of networks.
 - Check networks information.
 
-## Development server
-Run `npm install` to download required packages.
+## Features
+Users can go to [Editor](https://frankkramer-lab.github.io/CX-Typescript/editor), and either select a CX file from theire local device, or insert the UUID of a network from [NDEX](https://ndexbio.org/)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+After a successful upload, the network will appear in the Available networks list, users then can:
 
+- Show the network in the editor for a better read of the file
+- Check the network information
+- Check some statistics about the uploaded network
+- See errors list
 
+The website also offers the ability to directly search NDEx networks using the [Search on NDEx](https://frankkramer-lab.github.io/CX-Typescript/search) page. the user can search using the netowrk, user or group name.
+A list of networks will show up, then users can select some of the networks to then download them, or download all the networks from the search result.
+
+Finally the website offers a general statistics based on all the networks that the user have downloaded
 
 ## Next Step
 - [Further progression](https://github.com/frankkramer-lab/CX-Typescript/issues/8)
